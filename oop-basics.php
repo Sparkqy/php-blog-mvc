@@ -157,3 +157,26 @@ foreach ($objects as $object)
     }
     echo "Object " . get_class($object) . " does not implement interface";
 }
+
+
+// Static methods and properties
+
+class User
+{
+    public static $count = 0;
+
+    public function __construct()
+    {
+        return self::$count++;
+    }
+
+    public static function getCount()
+    {
+        return self::$count;
+    }
+}
+
+$user1 = new User();
+$user2 = new User();
+
+echo "We are strong together. Users exists " . User::getCount();
