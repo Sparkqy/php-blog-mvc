@@ -180,3 +180,44 @@ $user1 = new User();
 $user2 = new User();
 
 echo "We are strong together. Users exists " . User::getCount();
+
+//
+
+class UserBlog
+{
+    private $name;
+
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName():string
+    {
+        return $this->name;
+    }
+}
+
+class AuthorBlog
+{
+    private $title;
+    private $text;
+    private $author;
+
+    public function __construct(string $title, string $text, UserBlog $author)
+    {
+        $this->title = $title;
+        $this->text = $text;
+        $this->author = $author;
+    }
+
+    public function getAuthor():UserBlog
+    {
+        return $this->author;
+    }
+}
+
+$author = new UserBlog('Sparky writter');
+$article = new AuthorBlog('How not to die broke?', 'No way for you', $author);
+
+echo "<br>"."Name of author is: " . $article->getAuthor()->getName();
