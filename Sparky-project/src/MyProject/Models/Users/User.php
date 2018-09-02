@@ -6,6 +6,8 @@
  * Time: 11:57
  */
 
+namespace MyProject\Models\Users;
+
 class User
 {
     private $name;

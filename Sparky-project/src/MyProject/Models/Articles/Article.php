@@ -6,6 +6,10 @@
  * Time: 11:57
  */
 
+namespace MyProject\Models\Articles;
+
+use MyProject\Models\Users\User;
+
 class Article
 {
     private $title;

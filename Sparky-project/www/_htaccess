@@ -1,0 +1,7 @@
+RewriteEngine On
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+#RewriteRule ^(.*)$ .php-learn/Sparky-project/www/index.php?route=$1 [QSA,L]
+RewriteRule ^(.*)$ var/www/html/php-learn/Sparky-project/index.php?path=$1 [NC,L,QSA]
