@@ -26,13 +26,6 @@ class MainController
     {
         $title = null;
         $articles = $this->db->query('SELECT * FROM `articles`;');
-        var_dump($articles);
-//        $this->view->renderHtml('main/main.php', ['articles' => $articles, 'title' => $title]);
-    }
-
-    public function sayHello(string $name)
-    {
-        $title = "Страница приветствия";
-        $this->view->renderHtml('main/hello.php', ['name' => $name, 'title' => $title]);
+        $this->view->renderHtml('main/main.php', ['articles' => $articles, 'title' => $title]);
     }
 }

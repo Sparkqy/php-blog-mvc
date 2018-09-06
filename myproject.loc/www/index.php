@@ -7,6 +7,8 @@
  * @param string $className
  */
 
+use MyProject\View\View;
+
 spl_autoload_register(function (string $className)
 {
    require_once __DIR__ . '/../src/' . $className . '.php';
@@ -28,7 +30,8 @@ foreach ($routes as $pattern => $controllerAndAction)
 
 if (!$isRouteFound)
 {
-    echo 'Error 404 page not found';
+    $view = new View(__DIR__ . '/../templates');
+    $view->renderHtml('errors/404.php', [], 404);
     return;
 }
 
