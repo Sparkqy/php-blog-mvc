@@ -8,8 +8,10 @@
 
 namespace MyProject\Controllers;
 
+use MyProject\Models\Articles\Article;
 use MyProject\Services\Db;
 use MyProject\View\View;
+use MyProject\Models\Users\User;
 
 class ArticlesController
 {
@@ -26,8 +28,7 @@ class ArticlesController
     {
         $result = $this->db->query(
             'SELECT * FROM `articles` WHERE `id` = :id;',
-            [':id' => $articleId]
-        );
+            [':id' => $articleId], Article::class);
 
         if ($result === [])
         {
@@ -35,7 +36,10 @@ class ArticlesController
             return;
         }
 
-        $author = $this->db->query('SELECT `nickname` FROM `users` WHERE `id` = ' . $result[0][1]);
-        $this->view->renderHtml('articles/view.php', ['article' => $result[0], 'author' => $author[0][0]]);
+        $authorId = $result[0]->authorId;
+        $authorById = $this->db->query('SELECT `nickname` FROM `users` WHERE `id` = :authorId;',
+            [':authorId' => $authorId], User::class);
+
+        $this->view->renderHtml('articles/view.php', ['article' => $result[0], 'author' => $authorById[0]]);
     }
 }

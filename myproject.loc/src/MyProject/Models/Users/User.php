@@ -10,15 +10,10 @@ namespace MyProject\Models\Users;
 
 class User
 {
-    private $name;
+    private $nickname;
 
-    public function __construct(string $name)
+    public function getNickname(): string
     {
-        $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
+        return $this->nickname;
     }
 }
