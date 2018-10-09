@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4": {
+            "MyProject\\": "src/MyProject"
+        }
+    },
+    "name": "vendor/name",
+    "authors": [
+        {
+            "name": "SparkyGit",
+            "email": "triiko21@gmail.com"
+        }
+    ],
+    "require": {}
+}

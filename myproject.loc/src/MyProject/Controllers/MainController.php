@@ -8,25 +8,31 @@
 
 namespace MyProject\Controllers;
 
+use MyProject\Models\Comments\Comment;
 use MyProject\Models\Articles\Article;
+use MyProject\Models\Categories\Category;
+use MyProject\Services\UsersAuthService;
 use MyProject\View\View;
-use MyProject\Services\Db;
 
-class MainController
+class MainController extends AbstractController
 {
-    private $view;
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Db();
-        $this->view = new View(__DIR__ . '/../../../templates');
-    }
-
     public function main()
     {
-        $title = null;
-        $articles = $this->db->query('SELECT * FROM `articles`;', [], Article::class);
-        $this->view->renderHtml('main/main.php', ['articles' => $articles, 'title' => $title]);
+        $categories = Category::getAll();
+        $sliderArticles = Article::getLastArticles(3);
+        $topCommentators = Comment::getTopCommentators();
+
+        foreach ($categories as $category)
+        {
+            $articles[$category->getId()] = Article::getLastArticlesByCategoryId($category->getId(), 5);
+        }
+        $articles = array_diff($articles, array(NULL));
+
+        $this->view->renderHtml('main/main.php', [
+            'categories' => $categories,
+            'articles' => $articles,
+            'sliderArticles' => $sliderArticles,
+            'topCommentators' => $topCommentators,
+            ]);
     }
 }

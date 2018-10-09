@@ -11,15 +11,23 @@ namespace MyProject\View;
 class View
 {
     private $templatePath;
+    private $extraVars = [];
 
     public function __construct(string $templatePath)
     {
         $this->templatePath = $templatePath;
     }
 
+    public function setExtraVars(string $varName, $varValue): void
+    {
+        $this->extraVars[$varName] = $varValue;
+    }
+
     public function renderHtml(string $templateName, array $vars = [], int $code = 200)
     {
         http_response_code($code);
+
+        extract($this->extraVars);
         extract($vars);
 
         ob_start();

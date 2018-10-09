@@ -8,38 +8,177 @@
 
 namespace MyProject\Controllers;
 
+use http\Exception\UnexpectedValueException;
+use MyProject\Exceptions\Forbidden;
+use MyProject\Exceptions\InvalidArgumentException;
+use MyProject\Exceptions\NotFoundException;
+use MyProject\Exceptions\UnauthorizedException;
 use MyProject\Models\Articles\Article;
-use MyProject\Services\Db;
+use MyProject\Models\Categories\Category;
+use MyProject\Models\Comments\Comment;
+use MyProject\Models\Tags\Tag;
 use MyProject\View\View;
 use MyProject\Models\Users\User;
+use MyProject\Services\UsersAuthService;
 
-class ArticlesController
+class ArticlesController extends AbstractController
 {
-    private $db;
-    private $view;
-
-    public function __construct()
+    public function view(int $articleId): void
     {
-        $this->db = new Db();
-        $this->view = new View(__DIR__ . '/../../../templates');
-    }
+        $article = Article::getById($articleId);
 
-    public function view(int $articleId)
-    {
-        $result = $this->db->query(
-            'SELECT * FROM `articles` WHERE `id` = :id;',
-            [':id' => $articleId], Article::class);
-
-        if ($result === [])
+        if ($article === null)
         {
-            $this->view->renderHtml('errors/404.php', [], 404);
-            return;
+            throw new NotFoundException();
         }
 
-        $authorId = $result[0]->authorId;
-        $authorById = $this->db->query('SELECT `nickname` FROM `users` WHERE `id` = :authorId;',
-            [':authorId' => $authorId], User::class);
+        $categories = Category::getAll();
+        $articleTags = Article::getTagsId($articleId);
+        $comments = Comment::getByOneColumnArray('article_id', $articleId);
 
-        $this->view->renderHtml('articles/view.php', ['article' => $result[0], 'author' => $authorById[0]]);
+
+        if (!strpos($articleTags->getTagId(), ','))
+        {
+            $tags = Tag::getTagsByTagId($articleTags->getTagId());
+        } else
+        {
+            $articleTags = explode(',', $articleTags->getTagId());
+            $tags = Tag::getTagsByTagId($articleTags);
+        }
+
+        foreach ($tags as $tagArray)
+        {
+            array_shift($tags);
+            foreach ($tagArray as $tag)
+            {
+                $tags[] = $tag;
+            }
+        }
+
+        $views = Article::getPageViews($article);
+
+        foreach ($views as $key => $value)
+        {
+            $viewsAtm = $key;
+            $viewsTotal = $value;
+        }
+
+        $author = $article->getAuthor()->getNickname();
+        $title = $article->getName();
+
+        $this->view->renderHtml('articles/view.php', [
+            'article' => $article,
+            'author' => $author,
+            'title' => $title,
+            'viewsAtm' => $viewsAtm,
+            'viewsTotal' => $viewsTotal,
+            'tags' => $tags,
+            'categories' => $categories,
+            'comments' => $comments,
+        ]);
+    }
+
+    public function edit(int $articleId): void
+    {
+        $article = Article::getById($articleId);
+
+        if ($article === null)
+        {
+            throw new NotFoundException();
+        }
+
+        if ($this->user === null)
+        {
+            throw new UnauthorizedException();
+        }
+
+        if ($this->user->getRole() !== 'admin')
+        {
+            throw new Forbidden('Редактировать статьи может только администратор');
+        }
+
+        if (!empty($_POST)) {
+            try {
+                $article->updateFromArray($_POST);
+            } catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('articles/edit.php', ['error' => $e->getMessage()]);
+                return;
+            }
+
+            header('Location: /articles/' . $article->getId(), true, 302);
+            exit();
+        }
+
+        $this->view->renderHtml('articles/edit.php', ['article' => $article]);
+    }
+
+    public function add(): void
+    {
+        if ($this->user === null) {
+            throw new UnauthorizedException();
+        }
+
+        if ($this->user->getRole() !== 'admin')
+        {
+            throw new Forbidden('Добавлять статьи может только администратор');
+        }
+        if (!empty($_POST)) {
+            try {
+                $article = Article::createFromArray($_POST, $this->user);
+            } catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('articles/add.php', ['error' => $e->getMessage()]);
+                return;
+            }
+
+            header('Location: /articles/' . $article->getId(), true, 302);
+            exit();
+        }
+
+        $this->view->renderHtml('articles/add.php');
+    }
+
+    public function delete(int $articleId): void
+    {
+        if ($this->user === null) {
+            throw new UnauthorizedException();
+        }
+
+        if ($this->user->getRole() !== 'admin')
+        {
+            throw new Forbidden('Удалять статьи может только администратор');
+        }
+        $article = Article::getById($articleId);
+
+        if ($article === null)
+        {
+            throw new NotFoundException();
+        }
+
+        $article->delete();
+
+        $this->view->renderHtml('admin/admin.php');
+    }
+
+    public function comment(int $articleId): void
+    {
+        $article = Article::getById($articleId);
+
+        if ($this->user === null) {
+            throw new UnauthorizedException();
+        }
+
+        if (!empty($_POST))
+        {
+            try
+            {
+                $comment = Comment::addCommentFromArray($_POST);
+            } catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('articles/view.php', ['error' => $e->getMessage()]);
+                return;
+            }
+
+            header('Location: /articles/' . $article->getId(), true, 302);
+            exit();
+        }
     }
 }

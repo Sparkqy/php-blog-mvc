@@ -1,0 +1,11 @@
+$(document).ready(function(){
+    $('.owl-carousel').owlCarousel({
+        margin:10,
+        nav:true,
+        responsive:{
+            1000:{
+                items:1
+            }
+        }
+    })
+});
