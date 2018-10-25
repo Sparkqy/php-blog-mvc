@@ -37,7 +37,7 @@ class User extends ActiveRecordEntity
     }
     public function getNickname(): string
     {
-        return $this->nickname;
+        return ucfirst($this->nickname);
     }
     public function getPasswordHash(): string
     {
@@ -84,7 +84,7 @@ class User extends ActiveRecordEntity
 
     public static function logout()
     {
-
+        setcookie('token', null, time()-3600, '/');
     }
 
     public static function signUp(array $userData): User

@@ -36,10 +36,8 @@ try
         $controller = new $controllerName();
         $controller->$actionName(...$matches);
     } else
-        {
-        $view = new View(__DIR__ . '/../templates');
-        $view->renderHtml('errors/404.php', [], 404);
-        return;
+    {
+        throw new \MyProject\Exceptions\NotFoundException();
     }
 } catch (\MyProject\Exceptions\DbException $e)
 {

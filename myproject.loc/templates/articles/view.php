@@ -9,12 +9,16 @@
                         <a href="/articles/<?= $article->getId() ?>/delete" class="btn btn-danger">Удалить статью</a>
                     <?php endif; ?>
                     <h1><?= $article->getName() ?></h1>
-                    <?php foreach ($tags as $tag): ?>
-                        <span>#<?= $tag->getTagName() ?></span>
-                    <?php endforeach; ?>
+                    <?php if (empty($tags)): ?>
+                    <span class="text-danger">Тэгов по данной статье пока нет.</span>
+                    <?php endif; ?>
+                    <?php if (!empty($tags)): ?>
+                        <?php foreach ($tags as $tag): ?>
+                        <span><a href="/tags/<?= $tag->getId() ?>">#<?= $tag->getTagName() ?></a></span>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                     <img src="/<?= $article->getImgPath() ?>" alt="">
                     <p><?= $article->getText() ?></p>
-                    <p>Сейчас читают: <?= $viewsAtm ?> Всего прочитали: <?= $viewsTotal ?></p>
                 </div>
                 <ul class="comment-list">
                     <li>

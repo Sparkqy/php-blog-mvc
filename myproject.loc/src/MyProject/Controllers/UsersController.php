@@ -40,10 +40,9 @@ class UsersController extends AbstractController
 
     public function logout()
     {
-        if ($this->user !== null)
-        {
-            User::logout();
-        }
+        User::logout();
+        header('Location: /');
+        exit();
     }
 
     public function signUp()

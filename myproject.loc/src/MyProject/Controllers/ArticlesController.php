@@ -32,37 +32,8 @@ class ArticlesController extends AbstractController
             throw new NotFoundException();
         }
 
-        $categories = Category::getAll();
-        $articleTags = Article::getTagsId($articleId);
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
-
-
-        if (!strpos($articleTags->getTagId(), ','))
-        {
-            $tags = Tag::getTagsByTagId($articleTags->getTagId());
-        } else
-        {
-            $articleTags = explode(',', $articleTags->getTagId());
-            $tags = Tag::getTagsByTagId($articleTags);
-        }
-
-        foreach ($tags as $tagArray)
-        {
-            array_shift($tags);
-            foreach ($tagArray as $tag)
-            {
-                $tags[] = $tag;
-            }
-        }
-
-        $views = Article::getPageViews($article);
-
-        foreach ($views as $key => $value)
-        {
-            $viewsAtm = $key;
-            $viewsTotal = $value;
-        }
-
+        $tags = Tag::getTagsByArticleId($articleId);
         $author = $article->getAuthor()->getNickname();
         $title = $article->getName();
 
@@ -70,10 +41,7 @@ class ArticlesController extends AbstractController
             'article' => $article,
             'author' => $author,
             'title' => $title,
-            'viewsAtm' => $viewsAtm,
-            'viewsTotal' => $viewsTotal,
             'tags' => $tags,
-            'categories' => $categories,
             'comments' => $comments,
         ]);
     }

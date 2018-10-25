@@ -34,48 +34,14 @@ abstract class ActiveRecordEntity
     public static function getAll(): array
     {
         $db = Db::getInstance();
-        return $db->query('SELECT * FROM `'. static::getTableName() . '`;', [], static::class);
-    }
-
-    public static function getTagsId(int $articleId): ?self
-    {
-        $db = Db::getInstance();
-        $result = $db->query(
-            'SELECT `tag_id` FROM `' . static::getTableName() . '` WHERE `id` = :id;',
-            [':id' => $articleId],
-            static::class);
-
-        return $result ? $result[0] : null;
-    }
-
-    public static function getTagsByTagId($tagsId): array
-    {
-        $db = Db::getInstance();
-        if (is_array($tagsId))
-        {
-            foreach ($tagsId as $tagId)
-            {
-                $result[] = $db->query(
-                    'SELECT * FROM `' . static::getTableName() . '` WHERE `id` = :id;',
-                    [':id' => $tagId],
-                    static::class);
-            }
-        } else
-        {
-            $result[] = $db->query(
-                'SELECT `name` FROM `' . static::getTableName() . '` WHERE `id` = :id;',
-                [':id' => $tagsId],
-                static::class);
-        }
-
-        return (!empty($result)) ? $result : null;
+        return $db->query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
     }
 
     public static function getById(int $id): ?self
     {
         $db = Db::getInstance();
         $entities = $db->query(
-            'SELECT * FROM `'. static::getTableName() . '` WHERE `id` = :id;',
+            'SELECT * FROM `' . static::getTableName() . '` WHERE `id` = :id;',
             [':id' => $id],
             static::class);
 
@@ -86,8 +52,30 @@ abstract class ActiveRecordEntity
     {
         $db = Db::getInstance();
         $entities = $db->query(
-            'SELECT * FROM `'. static::getTableName() . '` WHERE `category_id` = :categoryId;',
+            'SELECT * FROM `' . static::getTableName() . '` WHERE `category_id` = :categoryId;',
             [':categoryId' => $categoryId],
+            static::class);
+
+        return $entities ? $entities : null;
+    }
+
+    public static function getTagsByArticleId(int $articleId): ?array
+    {
+        $db = Db::getInstance();
+        $entities = $db->query('SELECT * FROM `'.static::getTableName().'` JOIN `article_tag_links` AS links ON
+            (tags.id = links.tag_id) WHERE links.article_id = :articleId;',
+            [':articleId' => $articleId,],
+            static::class);
+
+        return $entities ? $entities : null;
+    }
+
+    public static function getArticlesByTags(int $tagId): ?array
+    {
+        $db = Db::getInstance();
+        $entities = $db->query('SELECT * FROM `'.static::getTableName().'` JOIN `article_tag_links` AS links ON
+            (articles.id = links.article_id) WHERE links.tag_id = :tagId;',
+            [':tagId' => $tagId,],
             static::class);
 
         return $entities ? $entities : null;
@@ -97,8 +85,8 @@ abstract class ActiveRecordEntity
     {
         $db = Db::getInstance();
         $entities = $db->query(
-            'SELECT * FROM `'. static::getTableName() .
-            '` WHERE `category_id` = :categoryId ORDER BY `created_at` DESC LIMIT '. $limit .';',
+            'SELECT * FROM `' . static::getTableName() .
+            '` WHERE `category_id` = :categoryId ORDER BY `created_at` DESC LIMIT '. $limit . ';',
             [':categoryId' => $categoryId,],
             static::class);
 
@@ -109,8 +97,8 @@ abstract class ActiveRecordEntity
     {
         $db = Db::getInstance();
         $entities = $db->query(
-            'SELECT * FROM `'. static::getTableName() . '` ORDER BY `created_at` DESC LIMIT ' . $limit .';',
-            [':limit' => $limit,],
+            'SELECT * FROM `' . static::getTableName() . '` ORDER BY `created_at` DESC LIMIT ' . $limit . ';',
+            [],
             static::class);
 
         return $entities ? $entities : null;
@@ -122,7 +110,7 @@ abstract class ActiveRecordEntity
         $offset = ($page - 1) * $itemsPerPage;
         $db = Db::getInstance();
         $entities = $db->query(
-            "SELECT * FROM `". static::getTableName() .
+            "SELECT * FROM `" . static::getTableName() .
             "` ORDER BY `created_at` DESC LIMIT " . $offset . "," . "$itemsPerPage;",
             [],
             static::class);
@@ -136,7 +124,7 @@ abstract class ActiveRecordEntity
         $offset = ($page - 1) * $itemsPerPage;
         $db = Db::getInstance();
         $entities = $db->query(
-            "SELECT * FROM `". static::getTableName() .
+            "SELECT * FROM `" . static::getTableName() .
             "` WHERE `category_id` = :categoryId ORDER BY `id` LIMIT " . $offset . "," . "$itemsPerPage;",
             [':categoryId' => $categoryId],
             static::class);
@@ -144,9 +132,22 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    public static function getPaginationTagId(int $tagId, int $page): ?array
+    {
+        $itemsPerPage = 5;
+        $offset = ($page - 1) * $itemsPerPage;
+        $db = Db::getInstance();
+        $entities = $db->query('SELECT * FROM `'.static::getTableName().'` JOIN `article_tag_links` AS links ON
+            (articles.id = links.article_id) WHERE links.tag_id = :tagId;',
+            [':tagId' => $tagId,],
+            static::class);
+
+        return $entities ? $entities : null;
+    }
+
     public static function getTopCommentators(): ?array
     {
-        $sql = 'SELECT `user_name` FROM `' . static::getTableName() .'` GROUP BY `user_id` ORDER BY COUNT(`user_id`) DESC LIMIT 5;';
+        $sql = 'SELECT `user_name` FROM `' . static::getTableName() . '` GROUP BY `user_id` ORDER BY COUNT(`user_id`) DESC LIMIT 5;';
         $db = Db::getInstance();
         $result = $db->query($sql, [], static::class);
 
@@ -160,8 +161,7 @@ abstract class ActiveRecordEntity
             [':value' => $value],
             static::class);
 
-        if ($result === null)
-        {
+        if ($result === null) {
             return null;
         }
 
@@ -175,8 +175,7 @@ abstract class ActiveRecordEntity
             [':value' => $value],
             static::class);
 
-        if ($result === null)
-        {
+        if ($result === null) {
             return null;
         }
 
@@ -190,8 +189,7 @@ abstract class ActiveRecordEntity
             [],
             static::class);
 
-        if ($result === null)
-        {
+        if ($result === null) {
             return null;
         }
 
@@ -219,8 +217,7 @@ abstract class ActiveRecordEntity
         $properties = $reflector->getProperties();
 
         $mappedProperties = [];
-        foreach ($properties as $property)
-        {
+        foreach ($properties as $property) {
             $propertyName = $property->getName();
             $propertyNameAsUnderscore = $this->camelCaseToUnderscore($propertyName);
             $mappedProperties[$propertyNameAsUnderscore] = $this->$propertyName;
@@ -235,8 +232,7 @@ abstract class ActiveRecordEntity
         $params2values = [];
         $index = 1;
 
-        foreach ($mappedProperties as $column => $value)
-        {
+        foreach ($mappedProperties as $column => $value) {
             $param = ':param' . $index; // :param1
             $columns2params[] = $column . ' = ' . $param; // column1 = :param1
             $params2values[':param' . $index] = $value; // [:param1 => value1]
@@ -256,8 +252,7 @@ abstract class ActiveRecordEntity
         $paramsNames = [];
         $params2values = [];
 
-        foreach ($filteredProperties as $columnName => $value)
-        {
+        foreach ($filteredProperties as $columnName => $value) {
             $columns[] = '`' . $columnName . '`';
             $paramsNames[] = ':' . $columnName;
             $params2values[':' . $columnName] = $value;
@@ -290,7 +285,7 @@ abstract class ActiveRecordEntity
     public function delete(): void
     {
         $db = Db::getInstance();
-        $sql = 'DELETE FROM `' . static::getTableName() .'` WHERE `id` = :id;';
+        $sql = 'DELETE FROM `' . static::getTableName() . '` WHERE `id` = :id;';
         $params = [':id' => $this->id];
 
         $db->query($sql, $params);

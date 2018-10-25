@@ -9,6 +9,7 @@
 namespace MyProject\Models\Articles;
 
 use MyProject\Models\ActiveRecordEntity;
+use MyProject\Models\Categories\Category;
 use MyProject\Models\Users\User;
 
 class Article extends ActiveRecordEntity
@@ -19,7 +20,6 @@ class Article extends ActiveRecordEntity
     protected $authorId;
     protected $image;
     protected $createdAt;
-    protected $tagId;
 
     protected static function getTableName(): string
     {
@@ -33,6 +33,10 @@ class Article extends ActiveRecordEntity
     public function getAuthor(): User
     {
         return User::getById($this->authorId);
+    }
+    public function getCategory(): Category
+    {
+        return Category::getById($this->categoryId);
     }
     public function getName(): string
     {
@@ -82,19 +86,6 @@ class Article extends ActiveRecordEntity
     public function setCatId(string $catId): void
     {
         $this->categoryId = $catId;
-    }
-
-    public static function getPageViews(Article $article): array
-    {
-        $readersViewing = rand(1, 5);
-        $totalViewsName = 'totalViewsPage' . $article->getId();
-        $totalViews = isset($totalViewsName) ? (int)$_COOKIE[$totalViewsName] : 0;
-
-        $totalViews += $readersViewing;
-        $views[$readersViewing] = $totalViews;
-        setcookie($totalViewsName, $totalViews, time() + 60 * 60 * 24 * 366, '/');
-
-        return $views;
     }
 
     public static function createFromArray(array $fields, User $author): Article

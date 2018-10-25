@@ -20,7 +20,7 @@ class Tag extends ActiveRecordEntity
         return 'tags';
     }
 
-    public function getTagName(): string
+    public function getName(): string
     {
         return $this->name;
     }

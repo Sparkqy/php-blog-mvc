@@ -6,20 +6,20 @@
  * Time: 13:42
  */
 
-return [
+/*return [
     'db' => [
         'host' => 'localhost',
         'db_name' => 'y99429uj_db',
         'user' => 'y99429uj_db',
         'password' => '369258147',
     ]
-];
+];*/
 
-// return [
-//     'db' => [
-//         'host' => 'localhost',
-//         'db_name' => 'my_project',
-//         'user' => 'root',
-//         'password' => '',
-//     ]
-// ];
+return [
+    'db' => [
+        'host' => 'localhost',
+        'db_name' => 'my_project',
+        'user' => 'root',
+        'password' => '',
+    ]
+];

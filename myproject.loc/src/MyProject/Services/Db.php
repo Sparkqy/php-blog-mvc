@@ -37,6 +37,7 @@ class Db
     {
         return $this->pdo->lastInsertId();
     }
+    
     public static function getInstance()
     {
         if (self::$instance === null)

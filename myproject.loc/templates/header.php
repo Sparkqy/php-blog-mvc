@@ -1,57 +1,132 @@
-<!DOCTYPE HTML>
-<html>
-
+<!DOCTYPE html>
+<html class="no-js" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><?= $title ?? 'Мой блог' ?></title>
-    <link href="/css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <link href="/css/style.css" rel='stylesheet' type='text/css' />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!----webfonts---->
-    <link href='http://fonts.googleapis.com/css?family=Oswald:100,400,300,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,300italic' rel='stylesheet' type='text/css'>
-    <!----//webfonts---->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/main.js"></script>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Philosophy</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script src="js/pace.min.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
 </head>
 
-<body style="height: 100vh;">
-    <!---header---->
-    <div class="header">
-        <div class="container">
-            <div class="logo">
-                <a href="/"><img src="/img/logo.jpg" title="" /></a>
-            </div>
-            <!---start-top-nav---->
-            <div class="top-menu col-md-8">
-                <div class="search">
-                    <form>
-                        <input type="text" placeholder="" required="">
-                        <input type="submit" value="" />
+<body id="top">
+
+    <!-- pageheader
+    ================================================== -->
+    <section class="s-pageheader s-pageheader--home">
+
+        <header class="header">
+            <div class="header__content row">
+
+                <div class="header__logo">
+                    <a class="logo" href="index.html">
+                        <img src="images/logo.svg" alt="Homepage">
+                    </a>
+                </div> <!-- end header__logo -->
+
+                <ul class="header__social">
+                    <li>
+                        <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="#0"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    </li>
+                </ul> <!-- end header__social -->
+
+                <a class="header__search-trigger" href="#0"></a>
+
+                <div class="header__search">
+
+                    <form role="search" method="get" class="header__search-form" action="#">
+                        <label>
+                            <span class="hide-content">Search for:</span>
+                            <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s" title="Search for:" autocomplete="off">
+                        </label>
+                        <input type="submit" class="search-submit" value="Search">
                     </form>
-                </div>
-                <span class="menu"> </span>
-                <ul>
-                    <li class="active"><a href="/">На главную</a></li>
-                    <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
+        
+                    <a href="#0" title="Close Search" class="header__overlay-close">Close</a>
+
+                </div>  <!-- end header__search -->
+
+
+                <a class="header__toggle-menu" href="#0" title="Menu"><span>Menu</span></a>
+
+                <nav class="header__nav-wrap">
+
+                    <h2 class="header__nav-heading h6">Site Navigation</h2>
+
+                    <ul class="header__nav">
+                        <li class="current"><a href="index.html" title="">Home</a></li>
+                        <li class="has-children">
+                            <a href="#0" title="">Categories</a>
+                            <ul class="sub-menu">
+                            <li><a href="category.html">Lifestyle</a></li>
+                            <li><a href="category.html">Health</a></li>
+                            <li><a href="category.html">Family</a></li>
+                            <li><a href="category.html">Management</a></li>
+                            <li><a href="category.html">Travel</a></li>
+                            <li><a href="category.html">Work</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-children">
+                            <a href="#0" title="">Blog</a>
+                            <ul class="sub-menu">
+                            <li><a href="single-video.html">Video Post</a></li>
+                            <li><a href="single-audio.html">Audio Post</a></li>
+                            <li><a href="single-gallery.html">Gallery Post</a></li>
+                            <li><a href="single-standard.html">Standard Post</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="style-guide.html" title="">Styles</a></li>
+                        <li><a href="about.html" title="">About</a></li>
+                        <li><a href="contact.html" title="">Contact</a></li>
+                                            <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
                     <li><a href="/admin">Страница админки</a></li>    
                     <?php endif; ?>
                     
-                    <?= !empty($user) ? '<li class="pull-right">Привет, ' . $user->getNickname() .  "</li>" : "<li class='pull-right'><a href='/users/login'>Войти</a></li>
-                        <li class='pull-right'><a href='/users/register'>Зарегестрироваться</a></li>" ?>
-                    <div class="clearfix"> </div>
-                </ul>
-            </div>
-            <div class="clearfix"></div>
-            <script>
-            $("span.menu").click(function() {
-                $(".top-menu ul").slideToggle("slow", function() {});
-            });
-            </script>
-            <!---//End-top-nav---->
-        </div>
-    </div>
+                    <?php if (!empty($user)): ?>
+                        <li>Привет, <?= $user->getNickname() ?><a href='/users/logout'>Выйти</a></li>
+                    <?php else: ?>
+                        <div class="pull-right">
+                            <li><a href='/users/register'>Зарегистрироваться</a></li>
+                            <li><a href='/users/login'>Войти</a></li>
+                        </div>
+                    <?php endif; ?>  
+                    </ul> <!-- end header__nav -->
+
+                    <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>
+
+                </nav> <!-- end header__nav-wrap -->
+
+            </div> <!-- header-content -->
+        </header> <!-- header -->
+  
