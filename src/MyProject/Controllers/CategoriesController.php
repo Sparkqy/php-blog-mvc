@@ -31,8 +31,9 @@ class CategoriesController extends AbstractController
             return;
         }
 
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $articlesCount = count($articlesAll);
+
         if ($articlesCount > 0)
         {
             $pagination = new Pagination($articlesCount, $page);

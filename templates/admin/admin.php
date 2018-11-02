@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../header.php'; ?>
+<?php require __DIR__ . '/../headerMain.php'; ?>
 <div class="content sticky-footer">
     <div class="container">
         <div class="col-md-12">

@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.php'?>
+<?php include __DIR__ . '/../headerMain.php' ?>
 	<div class="content">
         <div class="container">
             <div class="content-grids">
@@ -31,4 +31,4 @@
         </div>
     </div>
     <!---->
-<?php include __DIR__ . '/../footer.php'?>
+<?php include __DIR__ . '/../footer.php' ?>

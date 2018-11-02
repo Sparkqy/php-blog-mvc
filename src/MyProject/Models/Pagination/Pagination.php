@@ -13,7 +13,7 @@ use MyProject\Models\Buttons\Button;
 class Pagination
 {
     public $buttons = [];
-    public $itemsPerPage = 5;
+    public $itemsPerPage = 6;
 
     public function __construct(int $itemsCount, int $currentPage)
     {
@@ -37,13 +37,13 @@ class Pagination
             $currentPage = $pagesCount;
         }
 
-        $this->buttons[] = new Button($currentPage - 1, $currentPage > 1, 'Предыдущая');
+        $this->buttons[] = new Button($currentPage - 1, $currentPage > 1, '< Prev');
 
         for ($i = 1; $i <= $pagesCount; $i++) {
             $active = $currentPage != $i;
             $this->buttons[] = new Button($i, $active);
         }
 
-        $this->buttons[] = new Button($currentPage + 1, $currentPage < $pagesCount, 'Следующая');
+        $this->buttons[] = new Button($currentPage + 1, $currentPage < $pagesCount, 'Next >');
     }
 }

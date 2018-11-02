@@ -106,7 +106,7 @@ abstract class ActiveRecordEntity
 
     public static function getPaginationLastArticles(int $page): ?array
     {
-        $itemsPerPage = 5;
+        $itemsPerPage = 6;
         $offset = ($page - 1) * $itemsPerPage;
         $db = Db::getInstance();
         $entities = $db->query(

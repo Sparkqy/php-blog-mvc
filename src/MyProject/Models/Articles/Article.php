@@ -151,4 +151,21 @@ class Article extends ActiveRecordEntity
 
         return $this;
     }
+
+    public static function getArticleViews(int $articleId): int
+    {
+        $cookieName = 'article' . $articleId . 'views';
+        $cookieValue = isset($_COOKIE[$cookieName]) ? $_COOKIE[$cookieName] : 0;
+
+        setcookie($cookieName, $cookieValue);
+
+        if (isset($_COOKIE[$cookieName]))
+        {
+            return (int) $cookieValue;
+        } else
+        {
+            $cookieValue += 1;
+            return $cookieValue;
+        }
+    }
 }

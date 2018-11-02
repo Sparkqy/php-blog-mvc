@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.php'; ?>
+<?php include __DIR__ . '/../headerMain.php'; ?>
 <div class="container">
     <div class="col-md-12">
         <h1 style="margin-top: 3rem">Создание новой статьи</h1>

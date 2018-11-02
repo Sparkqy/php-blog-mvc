@@ -886,6 +886,12 @@ input[type="button"].btn--primary:focus {
    margin-right: 0;
 }
 
+.btn--danger, button.btn--danger {
+    background: #990000 !important;
+    border-color: #990000 !important;
+    color: #FFFFFF;
+}
+
 .btn--medium, button.btn--medium {
    height: 5.7rem !important;
    line-height: 5.3rem !important;
@@ -918,7 +924,9 @@ button::-moz-focus-inner, input::-moz-focus-inner {
    padding: 0;
 }
 
-
+.btn--danger:hover, button.btn--danger:hover {
+    background: #dd1144 !important;
+}
 
 /* =================================================================== 
  * # additional components
@@ -2906,6 +2914,7 @@ html.no-csstransitions .featured {
  *
  * ------------------------------------------------------------------- */
 .s-content {
+   position: relative;
    background-color: #f2f2f2;
    padding-top: 8.4rem;
    padding-bottom: 7.2rem;
@@ -4249,3 +4258,31 @@ footer h4::after {
 }
 
 /*# sourceMappingURL=main.css.map */
+
+
+/* -------------------------------------------------------------------
+ * ## comments
+ * ------------------------------------------------------------------- */
+.article__admin {
+    position: absolute;
+    right: 75px;
+    top: 35px;
+    border-bottom: 2px solid #000000;
+    background: #f2f2f2;
+}
+
+@media only screen and (max-width: 800px) {
+    .article__admin {
+        margin-top: -80px;
+        text-align: center;
+        position: static;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .article__admin {
+        margin-top: -80px;
+        text-align: center;
+        position: static;
+    }
+}

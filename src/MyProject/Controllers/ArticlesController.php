@@ -14,12 +14,14 @@ use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\UnauthorizedException;
 use MyProject\Models\Articles\Article;
+use MyProject\Models\ArticlesViewsInfo\ArticleViewInfo;
 use MyProject\Models\Categories\Category;
 use MyProject\Models\Comments\Comment;
 use MyProject\Models\Tags\Tag;
 use MyProject\View\View;
 use MyProject\Models\Users\User;
 use MyProject\Services\UsersAuthService;
+
 
 class ArticlesController extends AbstractController
 {
@@ -32,17 +34,22 @@ class ArticlesController extends AbstractController
             throw new NotFoundException();
         }
 
+        $categories = Category::getAll();
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
         $tags = Tag::getTagsByArticleId($articleId);
         $author = $article->getAuthor()->getNickname();
         $title = $article->getName();
+        ArticleViewInfo::incViews($articleId);
+        $views = ArticleViewInfo::getByOneColumn('article_id', $articleId);
 
         $this->view->renderHtml('articles/view.php', [
             'article' => $article,
             'author' => $author,
+            'categories' => $categories,
             'title' => $title,
             'tags' => $tags,
             'comments' => $comments,
+            'views' => $views,
         ]);
     }
 
