@@ -8,6 +8,8 @@
 
 return [
     '@^$@' => [\MyProject\Controllers\MainController::class, 'main'],
+    '@^about$@' => [\MyProject\Controllers\AboutMeController::class, 'view'],
+    '@^contact$@' => [\MyProject\Controllers\ContactsController::class, 'view'],
     '@^category/(\d+)$@' => [\MyProject\Controllers\CategoriesController::class, 'view'],
     '@^articles/(\d+)$@' => [\MyProject\Controllers\ArticlesController::class, 'view'],
     '@^articles/(\d+)/comment$@' => [\MyProject\Controllers\ArticlesController::class, 'comment'],

@@ -8,74 +8,31 @@
             <h3>Popular Posts</h3>
 
             <div class="block-1-2 block-m-full popular__posts">
+                <?php foreach ($popularArticles as $article): ?>
                 <article class="col-block popular__post">
-                    <a href="#0" class="popular__thumb">
+                    <a href="/articles/<?= $article->getId() ?>" class="popular__thumb">
                         <img src="/images/thumbs/small/wheel-150.jpg" alt="">
                     </a>
-                    <h5><a href="#0">Visiting Theme Parks Improves Your Health.</a></h5>
+                    <h5><a href="#0"><?= $article->getName() ?></a></h5>
                     <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>
-                        <span class="popular__date"><span>on</span> <time datetime="2017-12-19">Dec 19, 2017</time></span>
+                        <span class="popular__author"><span>By</span> <a href="#0"><?= $article->getAuthor()->getNickname() ?></a></span>
+                        <span class="popular__date"><span>on</span> <time><?= date('l F, Y', strtotime($article->getCreatedAt())) ?></time></span>
                     </section>
                 </article>
-                <article class="col-block popular__post">
-                    <a href="#0" class="popular__thumb">
-                        <img src="/images/thumbs/small/shutterbug-150.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Key Benefits Of Family Photography.</a></h5>
-                    <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>
-                        <span class="popular__date"><span>on</span> <time datetime="2017-12-18">Dec 18, 2017</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular__post">
-                    <a href="#0" class="popular__thumb">
-                        <img src="/images/thumbs/small/cookies-150.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Absolutely No Sugar Oatmeal Cookies.</a></h5>
-                    <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>
-                        <span class="popular__date"><span>on</span> <time datetime="2017-12-16">Dec 16, 2017</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular__post">
-                    <a href="#0" class="popular__thumb">
-                        <img src="/images/thumbs/small/beetle-150.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Throwback To The Good Old Days.</a></h5>
-                    <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>
-                        <span class="popular__date"><span>on</span> <time datetime="2017-12-16">Dec 16, 2017</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular__post">
-                    <a href="#0" class="popular__thumb">
-                        <img src="/images/thumbs/small/tulips-150.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">10 Interesting Facts About Caffeine.</a></h5>
-                    <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>
-                        <span class="popular__date"><span>on</span> <time datetime="2017-12-14">Dec 14, 2017</time></span>
-                    </section>
-                </article>
-                <article class="col-block popular__post">
-                    <a href="#0" class="popular__thumb">
-                        <img src="/images/thumbs/small/salad-150.jpg" alt="">
-                    </a>
-                    <h5><a href="#0">Healthy Mediterranean Salad Recipes</a></h5>
-                    <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"> John Doe</a></span>
-                        <span class="popular__date"><span>on</span> <time datetime="2017-12-12">Dec 12, 2017</time></span>
-                    </section>
-                </article>
+                <?php endforeach; ?>
             </div> <!-- end popular_posts -->
         </div> <!-- end popular -->
 
         <div class="col-four md-six tab-full about">
-            <h3>About Philosophy</h3>
+            <h3>About Creator</h3>
 
             <p>
-                Donec sollicitudin molestie malesuada. Nulla quis lorem ut libero malesuada feugiat. Pellentesque in ipsum id orci porta dapibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
+                Hi, my name is Koliadenko Ilya! I'm from Kiev, 20 y.o and I like to create different sites.
+                I call myself a full stack web-developer but my mom calls me a sparrow (idk why).
+                Ok, let's talk about business! My dev skills: HTML5, CSS (SCSS), JS (not really best language for me),
+                PHP7 (my passion), MySQL. Soon I'm going to learn some PHP frameworks like Slime or Laravel,
+                I don't know which one to choose first because they are both fire for sure. <br>
+                This site was created for learning objectives. All code is on my GitHub.
             </p>
 
             <ul class="about__social">
@@ -101,17 +58,9 @@
             <h3>Tags</h3>
 
             <div class="tagcloud">
-                <a href="#0">Salad</a>
-                <a href="#0">Recipe</a>
-                <a href="#0">Places</a>
-                <a href="#0">Tips</a>
-                <a href="#0">Friends</a>
-                <a href="#0">Travel</a>
-                <a href="#0">Exercise</a>
-                <a href="#0">Reading</a>
-                <a href="#0">Running</a>
-                <a href="#0">Self-Help</a>
-                <a href="#0">Vacation</a>
+                <?php foreach ($tagsAll as $tag): ?>
+                <a href="#0"><?= $tag->getName() ?></a>
+                <?php endforeach; ?>
             </div> <!-- end tagcloud -->
         </div> <!-- end tags -->
     </div> <!-- end tags-wrap -->

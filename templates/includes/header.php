@@ -41,7 +41,7 @@
         <div class="header__content row">
 
             <div class="header__logo">
-                <a class="logo" href="index.html">
+                <a class="logo" href="/">
                     <img src="/images/logo.svg" alt="Homepage">
                 </a>
             </div> <!-- end header__logo -->
@@ -100,8 +100,8 @@
                     </li>
 
                     <li><a href="style-guide.html" title="">Styles</a></li>
-                    <li><a href="about.html" title="">About</a></li>
-                    <li><a href="contact.html" title="">Contact</a></li>
+                    <li><a href="/about" title="">About</a></li>
+                    <li><a href="/contact" title="">Contact</a></li>
 
                     <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
                         <button class="btn btn--stroke"><a href="/admin">Admin panel</a></button>

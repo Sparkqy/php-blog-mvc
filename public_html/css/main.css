@@ -3661,6 +3661,15 @@ footer h4::after {
    margin: 3rem 0 3rem -6rem;
 }
 
+.s-content__main ul > li > a {
+   font-size: 18px;
+   padding-left: 20px;
+}
+
+.s-content__main ul > li:nth-of-type(2)  > a{
+   padding-left: 24px;
+}
+
 
 /* -------------------------------------------------------------------
  * ## content media

@@ -161,7 +161,8 @@ abstract class ActiveRecordEntity
             [':value' => $value],
             static::class);
 
-        if ($result === null) {
+        if ($result === null)
+        {
             return null;
         }
 
@@ -175,11 +176,21 @@ abstract class ActiveRecordEntity
             [':value' => $value],
             static::class);
 
-        if ($result === null) {
-            return null;
-        }
+        return !empty($result) ? $result : null;
+    }
 
-        return $result;
+    public static function getPopularArticles(): ?array
+    {
+        $db = Db::getInstance();
+        $sql =
+            'SELECT articles.id, articles.category_id, articles.author_id, articles.name, articles.text, articles.image, articles.created_at
+            FROM `articles`
+            JOIN `article_views_info`
+            ON articles.id = article_views_info.article_id 
+            ORDER BY `views` DESC LIMIT 6;';
+        $result = $db->query($sql, [], static::class);
+
+        return !empty($result) ? $result : null;
     }
 
     public static function getLastComments(): ?array
@@ -189,11 +200,7 @@ abstract class ActiveRecordEntity
             [],
             static::class);
 
-        if ($result === null) {
-            return null;
-        }
-
-        return $result;
+        return !empty($result) ? $result : null;
     }
 
     public function save(): void

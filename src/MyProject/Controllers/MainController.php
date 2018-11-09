@@ -27,13 +27,6 @@ class MainController extends AbstractController
 
         $topCommentators = Comment::getTopCommentators();
 
-/*        foreach ($categories as $category)
-        {
-            $articles[$category->getId()] = Article::getLastArticlesByCategoryId($category->getId(), 5);
-        }
-        $articles = array_diff($articles, array(NULL));*/
-//        $test = Article::getArticleViews(1);
-
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $articlesCount = count($articlesAll);
 
