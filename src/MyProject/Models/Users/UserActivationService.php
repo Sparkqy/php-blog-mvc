@@ -42,11 +42,6 @@ class UserActivationService
             ]
         );
 
-        if (!$result)
-        {
-            throw new UserActivationException('Ошибка активации. Проверочный код не валидный.');
-        }
-
         return !empty($result);
     }
 

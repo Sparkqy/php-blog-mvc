@@ -55,25 +55,26 @@ class User extends ActiveRecordEntity
 
     public static function login(array $loginData): User
     {
-        if (empty($loginData['email'])) {
-            throw new InvalidArgumentException('Не передан email');
+        if (empty($loginData['lEmail'])) {
+            throw new InvalidArgumentException('Empty email field.');
         }
 
-        if (empty($loginData['password'])) {
-            throw new InvalidArgumentException('Не передан password');
+        if (empty($loginData['lPassword'])) {
+            throw new InvalidArgumentException('Empty password field.');
         }
 
-        $user = User::getByOneColumn('email', $loginData['email']);
+        $user = User::getByOneColumn('email', $loginData['lEmail']);
+
         if ($user === null) {
-            throw new InvalidArgumentException('Нет пользователя с таким email');
+            throw new InvalidArgumentException('User does not exist.');
         }
 
-        if (!password_verify($loginData['password'], $user->getPasswordHash())) {
-            throw new InvalidArgumentException('Неправильный пароль');
+        if (!password_verify($loginData['lPassword'], $user->getPasswordHash())) {
+            throw new InvalidArgumentException('Wrong password.');
         }
 
         if (!$user->isConfirmed) {
-            throw new InvalidArgumentException('Пользователь не подтверждён');
+            throw new InvalidArgumentException('User is not confirmed.');
         }
 
         $user->refreshAuthToken();
@@ -89,49 +90,55 @@ class User extends ActiveRecordEntity
 
     public static function signUp(array $userData): User
     {
-        // nickname validate
-        if (empty($userData['nickname']))
+        // Nickname validate
+        if (empty($userData['rNickname']))
         {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Не передан никнейм');
-        }
-        if (!preg_match('/[a-zA-z0-9]+/', $userData['nickname']))
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Никнейм может состоять
-            из латинских букв и цифр');
-        }
-        if (static::getByOneColumn('nickname', $userData['nickname']) !== null)
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Пользователь с таким никнеймом
-            уже существует');
-        }
-        // email validate
-        if (empty($userData['email']))
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Не передан адрес эл. почты');
-        }
-        if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL))
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Введен некорректный эл. адрес');
-        }
-        if (static::getByOneColumn('email', $userData['email']) !== null)
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Данный эл. адрес уже используется');
-        }
-        // password validate
-        if (empty($userData['password']))
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Не передан пароль');
-        }
-        if (mb_strlen($userData['password']) <= 8)
-        {
-            throw new \MyProject\Exceptions\InvalidArgumentException('Пароль должен быть не менее 8 символов');
+            throw new InvalidArgumentException('Empty nickname field.');
         }
 
-        // create new user
+        if (!preg_match('/[a-zA-z0-9]+/', $userData['rNickname']))
+        {
+            throw new InvalidArgumentException('Nickname must contain only latin symbols and numbers');
+        }
+
+        if (static::getByOneColumn('nickname', $userData['rNickname']) !== null)
+        {
+            throw new InvalidArgumentException('User with this nickname already exists.');
+        }
+
+        // Email validate
+        if (empty($userData['rEmail']))
+        {
+            throw new InvalidArgumentException('Empty email field.');
+        }
+
+        if (!filter_var($userData['rEmail'], FILTER_VALIDATE_EMAIL))
+        {
+            throw new InvalidArgumentException('Wrong email address.');
+        }
+
+        if (static::getByOneColumn('email', $userData['rEmail']) !== null)
+        {
+            throw new InvalidArgumentException('User with this email already exists.');
+        }
+
+        // Password validate
+        if (empty($userData['rPassword']))
+        {
+            throw new InvalidArgumentException('Empty password field.');
+        }
+
+        if (mb_strlen($userData['rPassword']) <= 8)
+        {
+            throw new InvalidArgumentException('Password must contain 8 symbols or more.');
+        }
+
+        // Create new user
         $user = new User();
-        $user->nickname = $userData['nickname'];
-        $user->email = $userData['email'];
-        $user->passwordHash = password_hash($userData['password'], PASSWORD_DEFAULT);
+
+        $user->nickname = $userData['rNickname'];
+        $user->email = $userData['rEmail'];
+        $user->passwordHash = password_hash($userData['rPassword'], PASSWORD_DEFAULT);
         $user->isConfirmed = false;
         $user->role = 'user';
         $user->authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));

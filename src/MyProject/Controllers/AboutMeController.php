@@ -13,6 +13,6 @@ class AboutMeController extends AbstractController
 {
     public function view()
     {
-        $this->view->renderHtml('includes/headerMenu/about.php', []);
+        $this->view->renderHtml('headerMenu/about.php', []);
     }
 }

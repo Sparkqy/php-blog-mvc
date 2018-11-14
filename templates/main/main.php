@@ -79,8 +79,7 @@
                         
                     <div class="entry__thumb">
                         <a href="/articles/<?= $article->getId() ?>" class="entry__thumb-link">
-                            <img src="images/thumbs/masonry/lamp-400.jpg" 
-                                    srcset="images/thumbs/masonry/lamp-400.jpg 1x, images/thumbs/masonry/lamp-800.jpg 2x" alt="">
+                            <img src="<?= $article->getImgPath() ?>" alt="<?= $article->getName() ?>">
                         </a>
                     </div>
     

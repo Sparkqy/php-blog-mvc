@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
     <!-- s-content
     ================================================== -->
     <section class="s-content s-content--narrow">
@@ -74,5 +74,5 @@
 
     </section> <!-- s-content -->
 
-<?php include __DIR__ . '/../sectionExtra.php'; ?>
-<?php include __DIR__ . '/../footer.php'; ?>
+<?php include __DIR__ . '/../includes/sectionExtra.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

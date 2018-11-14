@@ -100,7 +100,7 @@
     <div id="comments" class="row">
     <div class="col-full">
     <?php if (!empty($comments)): ?>
-    <h3 class="h2">5 Comments</h3>
+    <h3 class="h2"><?= count($comments) ?> comments</h3>
 
     <!-- commentlist -->
         <ol class="commentlist">
@@ -149,7 +149,7 @@
                 <input type="hidden" name="user_name" value="<?= !empty($user) ? $user->getNickname() : '' ?>">
                 <input type="hidden" name="user_id" value="<?= !empty($user) ? $user->getId() : '' ?>">
                 <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
-                <caption><?= (!empty($user)) ? 'Никнейм : ' . $user->getNickname() : '' ?></caption>
+                <caption><?= (!empty($user)) ? $user->getNickname() : '' ?></caption>
 
                 <div class="message form-field">
                     <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message"></textarea>

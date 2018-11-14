@@ -24,31 +24,11 @@
         </div> <!-- end popular -->
 
         <div class="col-four md-six tab-full about">
-            <h3>About Creator</h3>
+            <h3>About Project</h3>
 
             <p>
-                Hi, my name is Koliadenko Ilya! I'm from Kiev, 20 y.o and I like to create different sites.
-                I call myself a full stack web-developer but my mom calls me a sparrow (idk why).
-                Ok, let's talk about business! My dev skills: HTML5, CSS (SCSS), JS (not really best language for me),
-                PHP7 (my passion), MySQL. Soon I'm going to learn some PHP frameworks like Slime or Laravel,
-                I don't know which one to choose first because they are both fire for sure. <br>
-                This site was created for learning objectives. All code is on my GitHub.
+                This website was created for educational purposes. All code is on github <a href="https://github.com/SparkyGit/php-blog-mvc">https://github.com/SparkyGit/php-blog-mvc</a>
             </p>
-
-            <ul class="about__social">
-                <li>
-                    <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                </li>
-                <li>
-                    <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                </li>
-                <li>
-                    <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                </li>
-                <li>
-                    <a href="#0"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                </li>
-            </ul> <!-- end header__social -->
         </div> <!-- end about -->
 
     </div> <!-- end row -->

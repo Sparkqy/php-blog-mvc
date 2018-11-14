@@ -1,30 +1,48 @@
-<?php include __DIR__ . '/../headerMain.php'; ?>
-    <div class="container">
-        <div class="col-md-12">
-            <?php if (!empty($error)): ?>
-                <div style="color: red; padding: 15px; margin: 15px;"><?= $error ?></div>
-            <?php endif; ?>
-            <div class="col-md-6 col-md-offset-3" style="margin-top: 10px;">
-                <h1 class="text-center">Регистрация</h1>
-                <form action="/users/register" method="post">
-                    <div class="form-group">
-                        <label>Nickname</label>
-                        <input class="form-control" type="text" name="nickname" value="<?= $_POST['nickname']?>">
-                    </div>
+<?php include __DIR__ . '/../includes/header.php'; ?>
+    <section class="s-content s-content--narrow">
 
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input class="form-control" type="text" name="email" value="<?= $_POST['email']?>">
-                    </div>
+        <div class="row">
 
-                    <div class="form-group">
-                        <label>Пароль</label>
-                        <input class="form-control" type="password" name="password" value="<?= $_POST['password']?>">
-                    </div>
+            <div class="col-full s-content__main">
 
-                    <input class="btn btn-success" type="submit" value="Зарегистрироваться">
-                </form>
-            </div>
-        </div>
-    </div>
-<?php include __DIR__ . '/../footer.php'; ?>
+                <h3>Registration.</h3>
+
+                <?php if(isset($rSuccess)): ?>
+                    <p><?= $rSuccess ?></p>
+                <?php endif; ?>
+
+                <?php if(!empty($error)): ?>
+                    <p><?= $error ?></p>
+                <?php endif; ?>
+
+                <form name="rForm" id="rForm" method="post" action="/users/register">
+                    <fieldset>
+
+                        <div class="form-field">
+                            <input name="rNickname" type="text" id="rNickname" class="full-width" placeholder="Your Nickname" value="<?php $_POST['rNickname']?>">
+                        </div>
+
+                        <div class="form-field">
+                            <input name="rEmail" type="email" id="rEmail" class="full-width" placeholder="Your Email (Will Be Used As Login)" value="<?= $_POST['rEmail'] ?>">
+                        </div>
+
+                        <div class="form-field">
+                            <input name="rPassword" type="password" id="rPassword" class="full-width" placeholder="Your Password">
+                        </div>
+
+                        <div class="form-field">
+                            <input name="rPasswordCheck" type="password" id="rPasswordCheck" class="full-width" placeholder="Repeat Your Password">
+                        </div>
+
+                        <button type="submit" class="submit btn btn--primary full-width">Sign Up</button>
+
+                    </fieldset>
+                </form> <!-- end form -->
+
+
+            </div> <!-- end s-content__main -->
+
+        </div> <!-- end row -->
+
+    </section> <!-- s-content -->
+<?php include __DIR__ . '/../includes/footer.php'; ?>

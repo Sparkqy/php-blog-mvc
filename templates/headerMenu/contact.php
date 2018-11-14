@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.php'; ?>
+<?php include __DIR__ . '/../includes/header.php'; ?>
     <!-- s-content
     ================================================== -->
     <section class="s-content s-content--narrow">
@@ -38,12 +38,11 @@
 
                 <div class="row">
                     <div class="col-six tab-full">
-                        <h3>Where to Find Us</h3>
+                        <h3>Place</h3>
 
                         <p>
-                        1600 Amphitheatre Parkway<br>
-                        Mountain View, CA<br>
-                        94043 US
+                            Ukraine <br>
+                            Kiev
                         </p>
 
                     </div>
@@ -51,33 +50,29 @@
                     <div class="col-six tab-full">
                         <h3>Contact Info</h3>
 
-                        <p>contact@philosophywebsite.com<br>
-                        info@philosophywebsite.com <br>
-                        Phone: (+1) 123 456
+                        <p>
+                            triiko21@gmail.com <br>
+                            +38(099)429-82-52
                         </p>
 
                     </div>
                 </div> <!-- end row -->
 
-                <h3>Say Hello.</h3>
+                <h3>Got any questions? Email me using the form below.</h3>
 
-                <form name="cForm" id="cForm" method="post" action="">
+                <?php if(!empty($error)): ?>
+                <p><?= $error ?></p>
+                <?php endif; ?>
+
+                <form name="cForm" id="cForm" method="post" action="/contact/contact-message">
                     <fieldset>
 
                         <div class="form-field">
-                            <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name" value="">
-                        </div>
-
-                        <div class="form-field">
-                            <input name="cEmail" type="text" id="cEmail" class="full-width" placeholder="Your Email" value="">
-                        </div>
-
-                        <div class="form-field">
-                            <input name="cWebsite" type="text" id="cWebsite" class="full-width" placeholder="Website"  value="">
+                            <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name" value="<?php $_POST['cName']?>">
                         </div>
 
                         <div class="message form-field">
-                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message" ></textarea>
+                            <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message"></textarea>
                         </div>
 
                         <button type="submit" class="submit btn btn--primary full-width">Submit</button>
@@ -92,5 +87,5 @@
 
     </section> <!-- s-content -->
 
-<?php include __DIR__ . '/../sectionExtra.php'; ?>
-<?php include __DIR__ . '/../footer.php'; ?>
+<?php include __DIR__ . '/../includes/sectionExtra.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

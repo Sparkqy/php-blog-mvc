@@ -63,12 +63,13 @@ class UsersController extends AbstractController
         {
             $code = UserActivationService::createActivationCode($user);
 
-            EmailSender::send($user, 'Активация', 'userActivation.php', [
+            EmailSender::send($user, 'Activation', 'userActivation.php', [
                'userId' => $user->getId(),
                'code' => $code,
             ]);
 
-            $this->view->renderHtml('users/signUpSuccessful.php');
+            $this->view->renderHtml('users/signUp.php',
+                ['rSuccess' => 'Registration successful, activation email was sent to your email address.']);
             return;
         }
 
@@ -79,20 +80,11 @@ class UsersController extends AbstractController
     {
         $user = User::getById($userId);
 
-        try
-        {
-            $isCodeValid = UserActivationService::checkActivationCode($user, $activationCode);
-        } catch (UserActivationException $e)
-        {
-            $this->view->renderHtml('mail/userActivationError.php', [
-                'error' => $e->getMessage()
-            ],422);
-            return;
-        }
+        $isCodeValid = UserActivationService::checkActivationCode($user, $activationCode);
 
         if ($isCodeValid) {
             $user->activate();
-            echo 'OK!';
+            $this->view->renderHtml('mail/userActivationSuccessful.php', [], 302);
             UserActivationService::deleteActivationCode($userId, $activationCode);
         }
     }
