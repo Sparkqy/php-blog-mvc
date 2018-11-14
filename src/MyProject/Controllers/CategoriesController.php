@@ -18,14 +18,14 @@ class CategoriesController extends AbstractController
     public function view(int $categoryId)
     {
         $category = Category::getById($categoryId);
-        $this->view->setExtraVars('category', $category);
         $articlesAll = Article::getByCategoryId($categoryId);
 
         if ($articlesAll === null)
         {
             $this->view->renderHtml(
                 'categories/category.php', [
-                    'error' => 'По данной категории еще нет статей.',
+                    'error' => 'No articles by this category yet.',
+                    'category' => null,
                     'articles' => null]
             );
             return;
@@ -42,6 +42,7 @@ class CategoriesController extends AbstractController
 
         $this->view->renderHtml('categories/category.php', [
             'articles' => $articles,
+            'category' => $category,
             'pagination' => $pagination]
         );
     }

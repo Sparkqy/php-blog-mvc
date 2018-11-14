@@ -13,7 +13,7 @@
                     <a href="/articles/<?= $article->getId() ?>" class="popular__thumb">
                         <img src="/images/thumbs/small/wheel-150.jpg" alt="">
                     </a>
-                    <h5><a href="#0"><?= $article->getName() ?></a></h5>
+                    <h5><a href="/articles/<?= $article->getId() ?>"><?= $article->getName() ?></a></h5>
                     <section class="popular__meta">
                         <span class="popular__author"><span>By</span> <a href="#0"><?= $article->getAuthor()->getNickname() ?></a></span>
                         <span class="popular__date"><span>on</span> <time><?= date('l F, Y', strtotime($article->getCreatedAt())) ?></time></span>
@@ -39,7 +39,7 @@
 
             <div class="tagcloud">
                 <?php foreach ($tagsAll as $tag): ?>
-                <a href="#0"><?= $tag->getName() ?></a>
+                <a href="/tags/<?= $tag->getId() ?>"><?= $tag->getName() ?></a>
                 <?php endforeach; ?>
             </div> <!-- end tagcloud -->
         </div> <!-- end tags -->

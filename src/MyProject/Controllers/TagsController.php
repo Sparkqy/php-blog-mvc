@@ -32,8 +32,9 @@ class TagsController extends AbstractController
         {
             $this->view->renderHtml(
                 'tags/articlesByTag.php', [
-                    'error' => 'По данному тегу еще нет статей.',
-                    'articles' => null]
+                    'error' => 'No articles by this tag yet.',
+                    'articles' => null,
+                    'tag' => null,]
             );
             return;
         }

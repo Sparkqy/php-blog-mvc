@@ -10,6 +10,7 @@ namespace MyProject\Controllers;
 
 
 use MyProject\Models\Articles\Article;
+use MyProject\Models\Categories\Category;
 use MyProject\Models\Tags\Tag;
 use MyProject\Services\UsersAuthService;
 use MyProject\View\View;
@@ -20,14 +21,17 @@ class AbstractController
     protected $user;
     protected $popularArticles;
     protected $tagsAll;
+    protected $categories;
 
     public function __construct()
     {
+        $this->categories = Category::getAll();
         $this->user = UsersAuthService::getUserByToken();
         $this->view = new View(__DIR__ . '/../../../templates');
         $this->popularArticles = Article::getPopularArticles();
         $this->tagsAll = Tag::getAll();
 
+        $this->view->setExtraVars('categories', $this->categories);
         $this->view->setExtraVars('user', $this->user);
         $this->view->setExtraVars('popularArticles', $this->popularArticles);
         $this->view->setExtraVars('tagsAll', $this->tagsAll);

@@ -34,7 +34,6 @@ class ArticlesController extends AbstractController
             throw new NotFoundException();
         }
 
-        $categories = Category::getAll();
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
         $tags = Tag::getTagsByArticleId($articleId);
         $author = $article->getAuthor()->getNickname();
@@ -45,7 +44,6 @@ class ArticlesController extends AbstractController
         $this->view->renderHtml('articles/view.php', [
             'article' => $article,
             'author' => $author,
-            'categories' => $categories,
             'title' => $title,
             'tags' => $tags,
             'comments' => $comments,

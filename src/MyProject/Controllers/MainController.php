@@ -20,7 +20,6 @@ class MainController extends AbstractController
 {
     public function main()
     {
-        $categories = Category::getAll();
         $articlesAll = Article::getAll();
         $featuredArticles = Article::getLastArticles(3);
         $featuredArticleBig = array_shift($featuredArticles);
@@ -37,7 +36,6 @@ class MainController extends AbstractController
         }
 
         $this->view->renderHtml('main/main.php', [
-            'categories' => $categories,
             'articles' => $articles,
             'pagination' => $pagination,
             'featuredArticles' => $featuredArticles,

@@ -1,34 +1,83 @@
-<?php include __DIR__ . '/../headerMain.php' ?>
-	<div class="content">
-        <div class="container">
-            <div class="content-grids">
-                <div class="col-md-8 content-main">
-                    <h2><?= $category->getName() ?></h2>
-                    <?= isset($error) ? $error : '' ?>
-                    <div class="content-grid">
-                        <?php if ($articles !== null): ?>
-                    	<?php foreach ($articles as $article): ?>
-                        	<div class="content-grid-info">
-                            	<div class="post-info">
-                                	<h4><a href="/articles/<?= $article->getId()?>"><?= $article->getName()?></a></h4>
-                            	</div>
-                        	</div>
-                        <?php endforeach; ?>
+<?php include __DIR__ . '/../includes/header.php' ?>
+<!-- s-content
+================================================== -->
+<section class="s-content">
 
+    <div class="row masonry-wrap">
+
+        <?php if (isset($articles)): ?>
+            <h2 class="text-center">Articles by <?= $category->getName() ?>:</h2>
+        <?php endif; ?>
+
+        <?php if (!empty($error)): ?>
+            <h2 class="text-center"><?= $error ?></h2>
+        <?php endif; ?>
+
+        <div class="masonry">
+
+            <div class="grid-sizer"></div>
+
+            <?php if ($articles !== null): ?>
+                <?php foreach ($articles as $article): ?>
+                    <article class="masonry__brick entry format-standard" data-aos="fade-up">
+
+                        <div class="entry__thumb">
+                            <a href="/articles/<?= $article->getId() ?>" class="entry__thumb-link">
+                                <img src="/<?= $article->getImgPath() ?>" alt="<?= $article->getName() ?>">
+                            </a>
+                        </div>
+
+                        <div class="entry__text">
+                            <div class="entry__header">
+
+                                <div class="entry__date">
+                                    <?= date('l F, Y', strtotime($article->getCreatedAt())) ?>
+                                </div>
+                                <h1 class="entry__title">
+                                    <a href="/articles/<?= $article->getId() ?>"><?= $article->getName() ?></a>
+                                </h1>
+
+                            </div>
+                            <div class="entry__excerpt">
+                                <p>
+                                    <?= substr($article->getText(), 0, 100) ?>...
+                                </p>
+                            </div>
+                            <div class="entry__meta">
+                            <span class="entry__meta-links">
+                                <a href="/category/<?= $article->getCatId() ?>"><?= $article->getCategory()->getName() ?></a>
+                            </span>
+                            </div>
+                        </div>
+
+                    </article> <!-- end article -->
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+        </div> <!-- end masonry -->
+    </div> <!-- end masonry-wrap -->
+
+    <?php if ($articles !== null): ?>
+        <div class="row">
+            <div class="col-full">
+
+                <nav class="pgn">
+                    <ul>
                         <?php foreach ($pagination->buttons as $button) : ?>
                             <?php if ($button->isActive) : ?>
-                                <a href = '?page=<?=$button->page?>'><?=$button->text?></a>
+                                <li><span class="pgn__num"><a href="?page=<?= $button->page ?>"><?= $button->text ?></a></span>
+                                </li>
                             <?php else : ?>
-                                <span style="color:#555555"><?=$button->text?></span>
+                                <li><?= $button->text ?></li>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <?php include __DIR__ . '/../content-side.php' ?>
-                <div class="clearfix"></div>
+                    </ul>
+                </nav>
+
             </div>
         </div>
-    </div>
-    <!---->
-<?php include __DIR__ . '/../footer.php' ?>
+    <?php endif; ?>
+
+</section> <!-- s-content -->
+
+<?php include __DIR__ . '/../includes/footer.php' ?>
