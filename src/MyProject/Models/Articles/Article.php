@@ -8,9 +8,11 @@
 
 namespace MyProject\Models\Articles;
 
+use http\Exception\InvalidArgumentException;
 use MyProject\Models\ActiveRecordEntity;
 use MyProject\Models\Categories\Category;
 use MyProject\Models\Users\User;
+use MyProject\Services\Db;
 
 class Article extends ActiveRecordEntity
 {
@@ -167,5 +169,16 @@ class Article extends ActiveRecordEntity
             $cookieValue += 1;
             return $cookieValue;
         }
+    }
+
+    public static function search(string $query): ?array
+    {
+        $query = Article::validate($query);
+
+        $db = Db::getInstance();
+        $result = $db->query("SELECT * FROM `" .static::getTableName(). "` WHERE `name` LIKE CONCAT('%', :query, '%')",
+            [':query' => $query], static::class);
+
+        return !empty($result) ? $result : null;
     }
 }

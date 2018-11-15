@@ -11,5 +11,7 @@
             "email": "triiko21@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-http": "*"
+    }
 }

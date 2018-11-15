@@ -48,16 +48,13 @@
 
             <ul class="header__social">
                 <li>
-                    <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100015266477096"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                 </li>
                 <li>
-                    <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="https://www.linkedin.com/in/%D0%B8%D0%BB%D1%8C%D1%8F-%D0%BA%D0%BE%D0%BB%D1%8F%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE-23a9a8170/"><i class="fa fa-linkedin"></i></a>
                 </li>
                 <li>
-                    <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                </li>
-                <li>
-                    <a href="#0"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    <a href="https://github.com/SparkyGit"><i class="fa fa-github"></i></a>
                 </li>
             </ul> <!-- end header__social -->
 
@@ -65,7 +62,7 @@
 
             <div class="header__search">
 
-                <form role="search" method="get" class="header__search-form" action="#">
+                <form role="search" method="GET" class="header__search-form" action="/search">
                     <label>
                         <span class="hide-content">Search for:</span>
                         <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s" title="Search for:" autocomplete="off">

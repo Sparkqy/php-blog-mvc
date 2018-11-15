@@ -25,4 +25,5 @@ return [
     '@^admin/comments$@' => [\MyProject\Controllers\AdminController::class, 'lastComments'],
     '@^admin$@' => [\MyProject\Controllers\AdminController::class, 'view'],
     '@^tags/(\d+)$@' => [\MyProject\Controllers\TagsController::class, 'view'],
+    '@^search$@' => [\MyProject\Controllers\SearchController::class, 'search'],
 ];

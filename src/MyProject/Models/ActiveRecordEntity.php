@@ -299,5 +299,12 @@ abstract class ActiveRecordEntity
         $this->id = null;
     }
 
+    public static function validate($value = ''): string
+    {
+        $value = trim(stripcslashes(strip_tags(htmlspecialchars($value))));
+
+        return $value;
+    }
+
     abstract protected static function getTableName(): string;
 }
