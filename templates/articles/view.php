@@ -55,36 +55,40 @@
             </p> <!-- end s-content__tags -->
 
             <div class="s-content__author">
-                <img src="/images/avatars/user-03.jpg" alt="">
+                <img src="/images/avatars/user-03.jpg" alt="Ilya Koliadenko Sparky">
 
                 <div class="s-content__author-about">
                     <h4 class="s-content__author-name">
-                        <a href="#0"><?= $article->getAuthor()->getNickname() ?></a>
+                        <a href="/about"><?= $article->getAuthor()->getNickname() ?></a>
                     </h4>
 
                     <ul class="s-content__author-social">
-                        <li><a href="#0">Facebook</a></li>
-                        <li><a href="#0">Twitter</a></li>
-                        <li><a href="#0">GooglePlus</a></li>
-                        <li><a href="#0">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/profile.php?id=100015266477096">Facebook</a></li>
+                        <li><a href="https://www.linkedin.com/in/%D0%B8%D0%BB%D1%8C%D1%8F-%D0%BA%D0%BE%D0%BB%D1%8F%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE-23a9a8170/">LinkedIn</a></li>
+                        <li><a href="mailto:triiko21@gmail.com">Google</a></li>
+                        <li><a href="https://github.com/SparkyGit">GitHub</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="s-content__pagenav">
                 <div class="s-content__nav">
+                    <?php if ($prevArticle !== null): ?>
                     <div class="s-content__prev">
-                        <a href="#0" rel="prev">
-                            <span>Previous Post</span>
-                            Tips on Minimalist Design
+                        <a href="/articles/<?= $prevArticle->getId() ?>" rel="prev">
+                            <span>Previous Article</span>
+                            <?= $prevArticle->getName() ?>
                         </a>
                     </div>
+                    <?php endif; ?>
+                    <?php if ($nextArticle !== null): ?>
                     <div class="s-content__next">
-                        <a href="#0" rel="next">
-                            <span>Next Post</span>
-                            Less Is More
+                        <a href="/articles/<?= $nextArticle->getId() ?>" rel="next">
+                            <span>Next Article</span>
+                            <?= $nextArticle->getName() ?>
                         </a>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div> <!-- end s-content__pagenav -->
 

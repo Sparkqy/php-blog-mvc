@@ -19,7 +19,8 @@ try
     foreach ($routes as $pattern => $controllerAndAction)
     {
         preg_match($pattern, $route, $matches);
-        if (!empty($matches)) {
+        if (!empty($matches))
+        {
             $isRouteFound = true;
             break;
         }

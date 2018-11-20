@@ -18,8 +18,8 @@ class CategoriesController extends AbstractController
     public function view(int $categoryId)
     {
         $category = Category::getById($categoryId);
-        $articlesAll = Article::getByCategoryId($categoryId);
 
+        $articlesAll = Article::getByCategoryId($categoryId);
         if ($articlesAll === null)
         {
             $this->view->renderHtml(
@@ -30,6 +30,7 @@ class CategoriesController extends AbstractController
             );
             return;
         }
+
 
         $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $articlesCount = count($articlesAll);

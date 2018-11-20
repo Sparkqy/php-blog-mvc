@@ -9,15 +9,12 @@
                 <h1 class="s-content__header-title">
                     Something about me.
                 </h1>
+                <p>Ilya Koliadenko. Back-end developer</p>
             </div> <!-- end s-content__header -->
 
             <div class="s-content__media col-full">
                 <div class="s-content__post-thumb">
-                    <img src="images/thumbs/about/about-1000.jpg"
-                         srcset="images/thumbs/about/about-2000.jpg 2000w, 
-                                 images/thumbs/about/about-1000.jpg 1000w, 
-                                 images/thumbs/about/about-500.jpg 500w"
-                         sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                    <img src="images/thumbs/about/user-03.jpg" alt="Ilya Koliadenko Sparky">
                 </div>
             </div> <!-- end s-content__media -->
 

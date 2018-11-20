@@ -181,4 +181,24 @@ class Article extends ActiveRecordEntity
 
         return !empty($result) ? $result : null;
     }
+
+    public static function nextArticle(int $articleId): ?self
+    {
+        $db = Db::getInstance();
+        $nextId = $articleId + 1;
+        $result = $db->query('SELECT * FROM `'.static::getTableName().'` WHERE `id` = :nextId;',
+            [':nextId' => $nextId], static::class);
+
+        return $result[0] ? $result[0] : null;
+    }
+
+    public static function prevArticle(int $articleId): ?self
+    {
+        $db = Db::getInstance();
+        $prevId = $articleId - 1;
+        $result = $db->query('SELECT * FROM `'.static::getTableName().'` WHERE `id` = :nextId;',
+            [':nextId' => $prevId], static::class);
+
+        return $result[0] ? $result[0] : null;
+    }
 }

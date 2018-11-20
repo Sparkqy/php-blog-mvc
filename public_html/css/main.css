@@ -3681,10 +3681,12 @@ footer h4::after {
 
 .s-content__media img {
    vertical-align: bottom;
+   border-radius: 5px;
 }
 
 .s-content__media, .s-content__post-thumb {
    position: relative;
+   text-align: center;
 }
 
 
