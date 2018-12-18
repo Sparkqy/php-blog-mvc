@@ -22,14 +22,17 @@ class Comment extends ActiveRecordEntity
     {
         return $this->articleId;
     }
+
     public function getText(): string
     {
         return $this->text;
     }
+
     public function getUserId(): int
     {
         return $this->userId;
     }
+
     public function getName(): string
     {
         return $this->userName;
@@ -37,7 +40,7 @@ class Comment extends ActiveRecordEntity
 
     public function setText(string $text): void
     {
-        $this->text = (string) $text;
+        $this->text = (string)$text;
     }
 
     public static function getTableName(): string

@@ -28,7 +28,8 @@
                     </li>
                     <li>
                         <i class="fa fa-2x fa-linkedin-square"></i>
-                        <a href="https://www.linkedin.com/in/%D0%B8%D0%BB%D1%8C%D1%8F-%D0%BA%D0%BE%D0%BB%D1%8F%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE-23a9a8170/">My LinkedLin</a>
+                        <a href="https://www.linkedin.com/in/%D0%B8%D0%BB%D1%8C%D1%8F-%D0%BA%D0%BE%D0%BB%D1%8F%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE-23a9a8170/">My
+                            LinkedLin</a>
                     </li>
                     <li>
                         <i class="fa fa-2x fa-github-square"></i>
@@ -60,19 +61,21 @@
 
                 <h3>Got any questions? Email me using the form below.</h3>
 
-                <?php if(!empty($error)): ?>
-                <p><?= $error ?></p>
+                <?php if (!empty($error)): ?>
+                    <p><?= $error ?></p>
                 <?php endif; ?>
 
                 <form name="cForm" id="cForm" method="post" action="/contact/contact-message">
                     <fieldset>
 
                         <div class="form-field">
-                            <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name" value="<?php $_POST['cName']?>">
+                            <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name"
+                                   value="<?php $_POST['cName'] ?>">
                         </div>
 
                         <div class="message form-field">
-                            <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message"></textarea>
+                            <textarea name="cMessage" id="cMessage" class="full-width"
+                                      placeholder="Your Message"></textarea>
                         </div>
 
                         <button type="submit" class="submit btn btn--primary full-width">Submit</button>

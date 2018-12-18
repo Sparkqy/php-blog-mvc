@@ -1,35 +1,58 @@
-<?php include __DIR__ . '/../headerMain.php'; ?>
-    <div class="container">
-        <div class="col-md-12">
-            <?php if (!empty($error)): ?>
-                <div class="text-danger"><?= $error ?></div>
-            <?php endif; ?>
-            <div class="col-md-6 col-md-offset-3" style="margin-top: 3rem">
-                <h1>Редактирование статьи <?= $article->getName() ?></h1>
-                <form action="/articles/<?= $article->getId() ?>/edit" method="post">
-                    <div class="form-group">
-                        <label for="name">Название статьи</label>
-                        <input class="form-control" type="text" name="name" id="name" value="<?= $_POST['name'] ?? $article->getName() ?>" size="50"><br>
-                    </div>
+<?php include __DIR__ . '/../includes/header.php'; ?>
+<section class="s-content s-content--narrow">
 
-                    <div class="form-group">
-                        <label for="catId">ID категории статьи</label>
-                        <input class="form-control" type="text" name="catId" id="catId" value="<?= $_POST['catId'] ?? $article->getCatId() ?>" size="50"><br>
-                    </div>
+    <div class="row">
 
-                    <div class="form-group">
-                        <label for="tags">ID тега статьи</label>
-                        <input class="form-control" type="text" name="tags" id="tags" value="<?= $_POST['tags'] ?? $article->getTagId() ?>" size="50"><br>
-                    </div>
+        <div class="col-full s-content__main">
 
-                    <div class="form-group">
-                        <label for="text">Текст статьи</label><br>
-                        <textarea class="form-control" name="text" id="text" rows="10" cols="80"><?= $_POST['text'] ?? $article->getText() ?></textarea><br>
-                    </div>
-
-                    <input class="btn btn-success" type="submit" value="Обновить">
-                </form>
+            <div class="article__admin">
+                <h4>Category ID = Category name:</h4>
+                <ul>
+                    <?php foreach ($categoryList as $category): ?>
+                        <li><?= $category->getId() ?> = <?= $category->getName() ?></li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
-        </div>
-    </div>
-<?php include __DIR__ . '/../footer.php'; ?>
+
+            <h3>Editing article "<?= $article->getName() ?>".</h3>
+            <p>id - <?= $article->getId() ?></p>
+
+            <?php if (!empty($error)): ?>
+                <p><?= $error ?></p>
+            <?php endif; ?>
+
+            <form name="eForm" id="eForm" method="POST" action="/articles/<?= $article->getId() ?>/edit">
+                <fieldset>
+
+                    <div class="form-field">
+                        <label for="eName">Article name:</label>
+                        <input name="eName" id="eName" type="text" class="full-width"
+                               placeholder="Edit article title name."
+                               value="<?= $_POST['eName'] ?? $article->getName() ?>">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="eCatId">Article category ID:</label>
+                        <input name="eCatId" id="eCatId" type="text" class="full-width"
+                               placeholder="Edit article category ID"
+                               value="<?= $_POST['eCatId'] ?? $article->getCatId() ?>">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="eText">Article text:</label>
+                        <textarea name="eText" id="eText"
+                                  class="full-width"><?= $_POST['eText'] ?? $article->getText() ?></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary full-width">Edit</button>
+
+                </fieldset>
+            </form> <!-- end form -->
+
+
+        </div> <!-- end s-content__main -->
+
+    </div> <!-- end row -->
+
+</section> <!-- s-content -->
+<?php include __DIR__ . '/../includes/footer.php'; ?>

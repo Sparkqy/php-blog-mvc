@@ -20,8 +20,7 @@ class CategoriesController extends AbstractController
         $category = Category::getById($categoryId);
 
         $articlesAll = Article::getByCategoryId($categoryId);
-        if ($articlesAll === null)
-        {
+        if ($articlesAll === null) {
             $this->view->renderHtml(
                 'categories/category.php', [
                     'error' => 'No articles by this category yet.',
@@ -32,19 +31,18 @@ class CategoriesController extends AbstractController
         }
 
 
-        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $articlesCount = count($articlesAll);
 
-        if ($articlesCount > 0)
-        {
+        if ($articlesCount > 0) {
             $pagination = new Pagination($articlesCount, $page);
             $articles = Article::getPaginationCategoryId($categoryId, $page);
         }
 
         $this->view->renderHtml('categories/category.php', [
-            'articles' => $articles,
-            'category' => $category,
-            'pagination' => $pagination]
+                'articles' => $articles,
+                'category' => $category,
+                'pagination' => $pagination]
         );
     }
 }

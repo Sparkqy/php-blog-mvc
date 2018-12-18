@@ -17,8 +17,7 @@ class AdminController extends AbstractController
 {
     public function view()
     {
-        if ($this->user === null || $this->user->getRole() !== 'admin')
-        {
+        if ($this->user === null || $this->user->getRole() !== 'admin') {
             throw new NotFoundException();
         }
 
@@ -27,8 +26,7 @@ class AdminController extends AbstractController
 
     public function lastArticles()
     {
-        if ($this->user === null || $this->user->getRole() !== 'admin')
-        {
+        if ($this->user === null || $this->user->getRole() !== 'admin') {
             throw new NotFoundException();
         }
 
@@ -46,13 +44,12 @@ class AdminController extends AbstractController
 
     public function lastComments()
     {
-        if ($this->user === null || $this->user->getRole() !== 'admin')
-        {
+        if ($this->user === null || $this->user->getRole() !== 'admin') {
             throw new NotFoundException();
         }
 
         $recentComments = Comment::getLastComments();
-        
+
         $this->view->renderHtml('admin/adminLastComments.php', [
             'recentComments' => $recentComments,
         ]);

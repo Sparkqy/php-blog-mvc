@@ -31,6 +31,7 @@ class AbstractController
         $this->popularArticles = Article::getPopularArticles();
         $this->tagsAll = Tag::getAll();
 
+        $this->view->setExtraVars('title', $this->title);
         $this->view->setExtraVars('categories', $this->categories);
         $this->view->setExtraVars('user', $this->user);
         $this->view->setExtraVars('popularArticles', $this->popularArticles);

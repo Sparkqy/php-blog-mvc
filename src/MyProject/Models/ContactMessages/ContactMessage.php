@@ -20,21 +20,24 @@ class ContactMessage extends ActiveRecordEntity
 
     public function getSenderName(): string
     {
-        return (string) $this->senderName;
+        return (string)$this->senderName;
     }
+
     public function getText(): string
     {
-        return (string) $this->text;
+        return (string)$this->text;
     }
+
     public function getDate(): string
     {
-        return (string) $this->date;
+        return (string)$this->date;
     }
 
     public function setSenderName(string $senderName): void
     {
         $this->senderName = ucfirst($senderName);
     }
+
     public function setText(string $text): void
     {
         $this->text = trim(htmlspecialchars(ucfirst($text)));
@@ -47,13 +50,11 @@ class ContactMessage extends ActiveRecordEntity
 
     public static function sendMessage(array $fields): void
     {
-        if (empty($fields['cName']))
-        {
+        if (empty($fields['cName'])) {
             throw new InvalidArgumentException('Empty name field.');
         }
 
-        if (empty($fields['cMessage']))
-        {
+        if (empty($fields['cMessage'])) {
             throw new InvalidArgumentException('Empty message field.');
         }
 

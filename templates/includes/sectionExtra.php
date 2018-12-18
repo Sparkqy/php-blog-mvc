@@ -9,16 +9,18 @@
 
             <div class="block-1-2 block-m-full popular__posts">
                 <?php foreach ($popularArticles as $article): ?>
-                <article class="col-block popular__post">
-                    <a href="/articles/<?= $article->getId() ?>" class="popular__thumb">
-                        <img src="/images/thumbs/small/wheel-150.jpg" alt="">
-                    </a>
-                    <h5><a href="/articles/<?= $article->getId() ?>"><?= $article->getName() ?></a></h5>
-                    <section class="popular__meta">
-                        <span class="popular__author"><span>By</span> <a href="#0"><?= $article->getAuthor()->getNickname() ?></a></span>
-                        <span class="popular__date"><span>on</span> <time><?= date('l F, Y', strtotime($article->getCreatedAt())) ?></time></span>
-                    </section>
-                </article>
+                    <article class="col-block popular__post">
+                        <a href="/articles/<?= $article->getId() ?>" class="popular__thumb">
+                            <img src="/images/thumbs/small/wheel-150.jpg" alt="">
+                        </a>
+                        <h5><a href="/articles/<?= $article->getId() ?>"><?= $article->getName() ?></a></h5>
+                        <section class="popular__meta">
+                            <span class="popular__author"><span>By</span> <a href="#0"><?= $article->getAuthor()
+                                        ->getNickname() ?></a></span>
+                            <span class="popular__date"><span>on</span> <time><?= date('l F, Y',
+                                        strtotime($article->getCreatedAt())) ?></time></span>
+                        </section>
+                    </article>
                 <?php endforeach; ?>
             </div> <!-- end popular_posts -->
         </div> <!-- end popular -->
@@ -27,7 +29,8 @@
             <h3>About Project</h3>
 
             <p>
-                This website was created for educational purposes. All code is on github <a href="https://github.com/SparkyGit/php-blog-mvc">https://github.com/SparkyGit/php-blog-mvc</a>
+                This website was created for educational purposes. All code is on github <a
+                        href="https://github.com/SparkyGit/php-blog-mvc">https://github.com/SparkyGit/php-blog-mvc</a>
             </p>
         </div> <!-- end about -->
 
@@ -39,7 +42,7 @@
 
             <div class="tagcloud">
                 <?php foreach ($tagsAll as $tag): ?>
-                <a href="/tags/<?= $tag->getId() ?>"><?= $tag->getName() ?></a>
+                    <a href="/tags/<?= $tag->getId() ?>"><?= $tag->getName() ?></a>
                 <?php endforeach; ?>
             </div> <!-- end tagcloud -->
         </div> <!-- end tags -->

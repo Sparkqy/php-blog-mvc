@@ -23,8 +23,8 @@ class Pagination
         }
 
         /** @var int $pagesCount
-         *  @var int $itemsCount
-         *  @var int $itemsPerPage
+         * @var int $itemsCount
+         * @var int $itemsPerPage
          */
         $pagesCount = ceil($itemsCount / $this->itemsPerPage);
 

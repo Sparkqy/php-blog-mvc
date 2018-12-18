@@ -21,13 +21,10 @@ class ContactsController extends AbstractController
 
     public function sendMessage()
     {
-        if (!empty($_POST))
-        {
-            try
-            {
+        if (!empty($_POST)) {
+            try {
                 ContactMessage::sendMessage($_POST);
-            } catch (InvalidArgumentException $e)
-            {
+            } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('headerMenu/contact.php', ['error' => $e->getMessage()]);
                 return;
             }

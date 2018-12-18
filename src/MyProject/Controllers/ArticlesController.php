@@ -28,11 +28,11 @@ class ArticlesController extends AbstractController
     public function view(int $articleId): void
     {
         $article = Article::getById($articleId);
-
-        if ($article === null)
-        {
+        if ($article === null) {
             throw new NotFoundException();
         }
+
+        $title = $article->getName();
         $nextArticle = Article::nextArticle($articleId);
         $prevArticle = Article::prevArticle($articleId);
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
@@ -41,6 +41,7 @@ class ArticlesController extends AbstractController
         $views = ArticleViewInfo::getByOneColumn('article_id', $articleId);
 
         $this->view->renderHtml('articles/view.php', [
+            'title' => $title,
             'article' => $article,
             'nextArticle' => $nextArticle,
             'prevArticle' => $prevArticle,
@@ -53,24 +54,20 @@ class ArticlesController extends AbstractController
     public function edit(int $articleId): void
     {
         $article = Article::getById($articleId);
-
-        if ($article === null)
-        {
+        if ($article === null) {
             throw new NotFoundException();
         }
 
-        if ($this->user === null)
-        {
+        if ($this->user === null) {
             throw new UnauthorizedException();
         }
 
-        if ($this->user->getRole() !== 'admin')
-        {
-            throw new Forbidden('Редактировать статьи может только администратор');
+        if ($this->user->getRole() !== 'admin') {
+            throw new Forbidden('Only admin can edit articles.');
         }
-
-        if (!empty($_POST))
-        {
+        $categoryList = Category::getAll();
+        $title = $article->getName() . ' - edit';
+        if (!empty($_POST)) {
             try {
                 $article->updateFromArray($_POST);
             } catch (InvalidArgumentException $e) {
@@ -82,26 +79,27 @@ class ArticlesController extends AbstractController
             exit();
         }
 
-        $this->view->renderHtml('articles/edit.php', ['article' => $article]);
+        $this->view->renderHtml('articles/edit.php', [
+            'article' => $article,
+            'categoryList' => $categoryList,
+            'title' => $title,
+        ]);
     }
 
     public function add(): void
     {
-        if ($this->user === null)
-        {
+        if ($this->user === null) {
             throw new UnauthorizedException();
         }
 
-        if ($this->user->getRole() !== 'admin')
-        {
-            throw new Forbidden('Добавлять статьи может только администратор');
+        if ($this->user->getRole() !== 'admin') {
+            throw new Forbidden('Only admin can edit articles.');
         }
+
         if (!empty($_POST)) {
-            try
-            {
+            try {
                 $article = Article::createFromArray($_POST, $this->user);
-            } catch (InvalidArgumentException $e)
-            {
+            } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('articles/add.php', ['error' => $e->getMessage()]);
                 return;
             }
@@ -115,19 +113,16 @@ class ArticlesController extends AbstractController
 
     public function delete(int $articleId): void
     {
-        if ($this->user === null)
-        {
+        if ($this->user === null) {
             throw new UnauthorizedException();
         }
 
-        if ($this->user->getRole() !== 'admin')
-        {
+        if ($this->user->getRole() !== 'admin') {
             throw new Forbidden('Удалять статьи может только администратор');
         }
         $article = Article::getById($articleId);
 
-        if ($article === null)
-        {
+        if ($article === null) {
             throw new NotFoundException();
         }
 
@@ -140,18 +135,14 @@ class ArticlesController extends AbstractController
     {
         $article = Article::getById($articleId);
 
-        if ($this->user === null)
-        {
+        if ($this->user === null) {
             throw new UnauthorizedException();
         }
 
-        if (!empty($_POST))
-        {
-            try
-            {
+        if (!empty($_POST)) {
+            try {
                 $comment = Comment::addCommentFromArray($_POST);
-            } catch (InvalidArgumentException $e)
-            {
+            } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('articles/view.php', ['error' => $e->getMessage()]);
                 return;
             }

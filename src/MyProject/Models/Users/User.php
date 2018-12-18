@@ -31,18 +31,22 @@ class User extends ActiveRecordEntity
     {
         return $this->email;
     }
+
     public function getRole(): string
     {
         return $this->role;
     }
+
     public function getNickname(): string
     {
         return ucfirst($this->nickname);
     }
+
     public function getPasswordHash(): string
     {
         return $this->passwordHash;
     }
+
     public function getAuthToken(): string
     {
         return $this->authToken;
@@ -85,51 +89,43 @@ class User extends ActiveRecordEntity
 
     public static function logout()
     {
-        setcookie('token', null, time()-3600, '/');
+        setcookie('token', null, time() - 3600, '/');
     }
 
     public static function signUp(array $userData): User
     {
         // Nickname validate
-        if (empty($userData['rNickname']))
-        {
+        if (empty($userData['rNickname'])) {
             throw new InvalidArgumentException('Empty nickname field.');
         }
 
-        if (!preg_match('/[a-zA-z0-9]+/', $userData['rNickname']))
-        {
+        if (!preg_match('/[a-zA-z0-9]+/', $userData['rNickname'])) {
             throw new InvalidArgumentException('Nickname must contain only latin symbols and numbers');
         }
 
-        if (static::getByOneColumn('nickname', $userData['rNickname']) !== null)
-        {
+        if (static::getByOneColumn('nickname', $userData['rNickname']) !== null) {
             throw new InvalidArgumentException('User with this nickname already exists.');
         }
 
         // Email validate
-        if (empty($userData['rEmail']))
-        {
+        if (empty($userData['rEmail'])) {
             throw new InvalidArgumentException('Empty email field.');
         }
 
-        if (!filter_var($userData['rEmail'], FILTER_VALIDATE_EMAIL))
-        {
+        if (!filter_var($userData['rEmail'], FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Wrong email address.');
         }
 
-        if (static::getByOneColumn('email', $userData['rEmail']) !== null)
-        {
+        if (static::getByOneColumn('email', $userData['rEmail']) !== null) {
             throw new InvalidArgumentException('User with this email already exists.');
         }
 
         // Password validate
-        if (empty($userData['rPassword']))
-        {
+        if (empty($userData['rPassword'])) {
             throw new InvalidArgumentException('Empty password field.');
         }
 
-        if (mb_strlen($userData['rPassword']) <= 8)
-        {
+        if (mb_strlen($userData['rPassword']) <= 8) {
             throw new InvalidArgumentException('Password must contain 8 symbols or more.');
         }
 

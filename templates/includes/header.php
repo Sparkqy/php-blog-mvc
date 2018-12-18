@@ -5,7 +5,7 @@
     <!--- basic page needs
     ================================================== -->
     <meta charset="utf-8">
-    <title>Philosophy</title>
+    <title><?= $title ?></title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -42,16 +42,18 @@
 
             <div class="header__logo">
                 <a class="logo" href="/">
-                    <img src="/images/logo.svg" alt="Homepage">
+                    Sparky-blog
                 </a>
             </div> <!-- end header__logo -->
 
             <ul class="header__social">
                 <li>
-                    <a href="https://www.facebook.com/profile.php?id=100015266477096"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100015266477096"><i class="fa fa-facebook"
+                                                                                         aria-hidden="true"></i></a>
                 </li>
                 <li>
-                    <a href="https://www.linkedin.com/in/%D0%B8%D0%BB%D1%8C%D1%8F-%D0%BA%D0%BE%D0%BB%D1%8F%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE-23a9a8170/"><i class="fa fa-linkedin"></i></a>
+                    <a href="https://www.linkedin.com/in/%D0%B8%D0%BB%D1%8C%D1%8F-%D0%BA%D0%BE%D0%BB%D1%8F%D0%B4%D0%B5%D0%BD%D0%BA%D0%BE-23a9a8170/"><i
+                                class="fa fa-linkedin"></i></a>
                 </li>
                 <li>
                     <a href="https://github.com/SparkyGit"><i class="fa fa-github"></i></a>
@@ -65,7 +67,8 @@
                 <form role="search" method="GET" class="header__search-form" action="/search">
                     <label>
                         <span class="hide-content">Search for:</span>
-                        <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s" title="Search for:" autocomplete="off">
+                        <input type="search" class="search-field" placeholder="Type Keywords" value="" name="s"
+                               title="Search for:" autocomplete="off">
                     </label>
                     <input type="submit" class="search-submit" value="Search">
                 </form>
@@ -87,11 +90,12 @@
                         <a href="#0" title="">Categories</a>
                         <ul class="sub-menu">
 
-                        <?php foreach ($categories as $category): ?>
-                            <li>
-                                <a href="/category/<?= $category->getId() ?>" title=""><?= $category->getName() ?></a>
-                            </li>
-                        <?php endforeach; ?>
+                            <?php foreach ($categories as $category): ?>
+                                <li>
+                                    <a href="/category/<?= $category->getId() ?>"
+                                       title=""><?= $category->getName() ?></a>
+                                </li>
+                            <?php endforeach; ?>
 
                         </ul>
                     </li>
@@ -101,21 +105,21 @@
                     <li><a href="/contact" title="">Contact</a></li>
 
                     <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
-                        <button class="btn btn--stroke"><a href="/admin">Admin panel</a></button>
+                        <a href="/admin" class="btn">Admin panel</a>
                     <?php endif; ?>
 
                     <?php if (!empty($user)): ?>
-                    <div class="pull-right">
-                        <li>Hi, <?= $user->getNickname() ?></li>
-                        <li><a href='/users/logout'>Sign Out</a></li>
-                    </div>
+                        <div class="pull-right">
+                            <li>Hi, <?= $user->getNickname() ?></li>
+                            <li><a href='/users/logout'>Sign Out</a></li>
+                        </div>
                     <?php else: ?>
                         <div class="pull-right">
                             <li><a href='/users/register'>Register</a></li>
                             <li><a href='/users/login'>Log in</a></li>
                         </div>
                     <?php endif; ?>
-                    
+
                 </ul> <!-- end header__nav -->
 
                 <a href="#0" title="Close Menu" class="header__overlay-close close-mobile-menu">Close</a>

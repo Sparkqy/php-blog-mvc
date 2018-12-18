@@ -21,15 +21,13 @@ class TagsController extends AbstractController
         $tag = Tag::getById($tagId);
         $this->view->setExtraVars('tag', $tag);
 
-        if ($tag === null)
-        {
+        if ($tag === null) {
             throw new NotFoundException();
         }
 
         $articles = Article::getArticlesByTags($tagId);
 
-        if ($articles === null)
-        {
+        if ($articles === null) {
             $this->view->renderHtml(
                 'tags/articlesByTag.php', [
                     'error' => 'No articles by this tag yet.',
@@ -41,8 +39,7 @@ class TagsController extends AbstractController
 
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $articlesCount = count($articles);
-        if ($articlesCount > 0)
-        {
+        if ($articlesCount > 0) {
             $pagination = new Pagination($articlesCount, $page);
             $articles = Article::getPaginationTagId($tagId, $page);
         }

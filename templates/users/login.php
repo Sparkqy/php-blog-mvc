@@ -7,7 +7,7 @@
 
                 <h3>Login.</h3>
 
-                <?php if(!empty($error)): ?>
+                <?php if (!empty($error)): ?>
                     <p><?= $error ?></p>
                 <?php endif; ?>
 
@@ -15,11 +15,13 @@
                     <fieldset>
 
                         <div class="form-field">
-                            <input name="lEmail" type="email" id="lEmail" class="full-width" placeholder="Your Email" value="<?= $_POST['lEmail'] ?>">
+                            <input name="lEmail" type="email" id="lEmail" class="full-width" placeholder="Your Email"
+                                   value="<?= $_POST['lEmail'] ?>">
                         </div>
 
                         <div class="form-field">
-                            <input name="lPassword" type="password" id="lPassword" class="full-width" placeholder="Your Password">
+                            <input name="lPassword" type="password" id="lPassword" class="full-width"
+                                   placeholder="Your Password">
                         </div>
 
                         <button type="submit" class="submit btn btn--primary full-width">Sign In</button>

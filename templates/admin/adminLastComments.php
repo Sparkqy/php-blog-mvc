@@ -8,9 +8,11 @@
                         <ul class="comment-list" style="padding: 15px;">
                             <?php if (!empty($recentComments)): ?>
                                 <?php foreach ($recentComments as $comment): ?>
-                                    <h5 class="post-author_head" style="margin-bottom: 5px;">Комментарий оставил <b><?= $comment->getName() ?></b>
+                                    <h5 class="post-author_head" style="margin-bottom: 5px;">Комментарий оставил
+                                        <b><?= $comment->getName() ?></b>
                                     </h5>
-                                    <li><a href="/articles/<?= $comment->getArticleId() ?>">Перейти на страничку со статьей</a></li>
+                                    <li><a href="/articles/<?= $comment->getArticleId() ?>">Перейти на страничку со
+                                            статьей</a></li>
                                     <li style="padding-left: 10px;"><?= $comment->getText() ?></li>
                                     <hr>
                                 <?php endforeach; ?>

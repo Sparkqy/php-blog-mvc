@@ -32,59 +32,67 @@ class Article extends ActiveRecordEntity
     {
         return $this->image;
     }
+
     public function getAuthor(): User
     {
         return User::getById($this->authorId);
     }
+
     public function getCategory(): Category
     {
         return Category::getById($this->categoryId);
     }
+
     public function getName(): string
     {
         return $this->name;
     }
+
     public function getText(): string
     {
         return $this->text;
     }
+
     public function getCatId(): int
     {
-        return (int) $this->categoryId;
+        return (int)$this->categoryId;
     }
+
     public function getCreatedAt(): string
     {
         return $this->createdAt;
-    }
-    public function getTagId(): string
-    {
-        return $this->tagId;
     }
 
     public function setAuthor(User $author): void
     {
         $this->authorId = $author->getId();
     }
+
     public function setName(string $newName): void
     {
         $this->name = $newName;
     }
+
     public function setText(string $newText): void
     {
         $this->text = $newText;
     }
+
     public function setImage(string $imagePath): void
     {
         $this->image = $imagePath;
     }
+
     public function setAuthorId(string $newAuthorId): void
     {
         $this->authorId = $newAuthorId;
     }
+
     public function setTags(string $tags): void
     {
         $this->tagId = $tags;
     }
+
     public function setCatId(string $catId): void
     {
         $this->categoryId = $catId;
@@ -92,34 +100,33 @@ class Article extends ActiveRecordEntity
 
     public static function createFromArray(array $fields, User $author): Article
     {
-        if (empty($fields['name'])) {
-            throw new InvalidArgumentException('Не передано название статьи');
+        if (empty($fields['aName'])) {
+            throw new InvalidArgumentException('Empty article\'s name field.');
         }
 
-        if (empty($fields['image'])) {
-            throw new InvalidArgumentException('Не передана картинка статьи');
+        if (empty($fields['aImage'])) {
+            throw new InvalidArgumentException('Empty article\'s image field.');
         }
 
-        if (empty($fields['text'])) {
-            throw new InvalidArgumentException('Не передан текст статьи');
+        if (empty($fields['aText'])) {
+            throw new InvalidArgumentException('Empty article\'s text field.');
         }
 
-        if (empty($fields['tags'])) {
-            throw new InvalidArgumentException('Не переданы ID теги статьи');
+        if (empty($fields['aTags'])) {
+            throw new InvalidArgumentException('Empty article\'s tags ID field.');
         }
 
-        if (empty($fields['catId'])) {
-            throw new InvalidArgumentException('Не передан ID категории статьи');
+        if (empty($fields['aCatId'])) {
+            throw new InvalidArgumentException('Empty article\'s category ID field.');
         }
 
         $article = new Article();
 
         $article->setAuthor($author);
-        $article->setName($fields['name']);
-        $article->setImage($fields['image']);
-        $article->setCatId($fields['catId']);
-        $article->setText($fields['text']);
-        $article->setTags($fields['tags']);
+        $article->setName($fields['aName']);
+        $article->setImage($fields['aImage']);
+        $article->setCatId($fields['aCatId']);
+        $article->setText($fields['aText']);
 
         $article->save();
 
@@ -128,47 +135,25 @@ class Article extends ActiveRecordEntity
 
     public function updateFromArray(array $fields): Article
     {
-        if (empty($fields['name'])) {
-            throw new InvalidArgumentException('Не передано название статьи');
+        if (empty($fields['eName'])) {
+            throw new InvalidArgumentException('Empty article\'s name field.');
         }
 
-        if (empty($fields['text'])) {
-            throw new InvalidArgumentException('Не передан текст статьи');
+        if (empty($fields['eText'])) {
+            throw new InvalidArgumentException('Empty article\' text field.');
         }
 
-        if (empty($fields['tags'])) {
-            throw new InvalidArgumentException('Не переданы ID теги статьи');
+        if (empty($fields['eCatId'])) {
+            throw new InvalidArgumentException('Empty article\'s category ID field.');
         }
 
-        if (empty($fields['catId'])) {
-            throw new InvalidArgumentException('Не передан ID категории статьи');
-        }
-
-        $this->setName($fields['name']);
-        $this->setCatId($fields['catId']);
-        $this->setText($fields['text']);
-        $this->setTags($fields['tags']);
+        $this->setName($fields['eName']);
+        $this->setCatId($fields['eCatId']);
+        $this->setText($fields['eText']);
 
         $this->save();
 
         return $this;
-    }
-
-    public static function getArticleViews(int $articleId): int
-    {
-        $cookieName = 'article' . $articleId . 'views';
-        $cookieValue = isset($_COOKIE[$cookieName]) ? $_COOKIE[$cookieName] : 0;
-
-        setcookie($cookieName, $cookieValue);
-
-        if (isset($_COOKIE[$cookieName]))
-        {
-            return (int) $cookieValue;
-        } else
-        {
-            $cookieValue += 1;
-            return $cookieValue;
-        }
     }
 
     public static function search(string $query): ?array
@@ -176,8 +161,9 @@ class Article extends ActiveRecordEntity
         $query = Article::validate($query);
 
         $db = Db::getInstance();
-        $result = $db->query("SELECT * FROM `" .static::getTableName(). "` WHERE `name` LIKE CONCAT('%', :query, '%')",
-            [':query' => $query], static::class);
+        $result =
+            $db->query("SELECT * FROM `" . static::getTableName() . "` WHERE `name` LIKE CONCAT('%', :query, '%')",
+                [':query' => $query], static::class);
 
         return !empty($result) ? $result : null;
     }
@@ -186,7 +172,7 @@ class Article extends ActiveRecordEntity
     {
         $db = Db::getInstance();
         $nextId = $articleId + 1;
-        $result = $db->query('SELECT * FROM `'.static::getTableName().'` WHERE `id` = :nextId;',
+        $result = $db->query('SELECT * FROM `' . static::getTableName() . '` WHERE `id` = :nextId;',
             [':nextId' => $nextId], static::class);
 
         return $result[0] ? $result[0] : null;
@@ -196,7 +182,7 @@ class Article extends ActiveRecordEntity
     {
         $db = Db::getInstance();
         $prevId = $articleId - 1;
-        $result = $db->query('SELECT * FROM `'.static::getTableName().'` WHERE `id` = :nextId;',
+        $result = $db->query('SELECT * FROM `' . static::getTableName() . '` WHERE `id` = :nextId;',
             [':nextId' => $prevId], static::class);
 
         return $result[0] ? $result[0] : null;

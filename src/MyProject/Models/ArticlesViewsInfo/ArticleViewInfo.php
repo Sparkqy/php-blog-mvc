@@ -22,6 +22,7 @@ class ArticleViewInfo extends ActiveRecordEntity
     {
         return $this->views;
     }
+
     public function getArticleId(): int
     {
         return $this->articleId;
@@ -35,18 +36,17 @@ class ArticleViewInfo extends ActiveRecordEntity
     public static function incViews(int $articleId): void
     {
         $db = Db::getInstance();
-        $idExists = $db->query('SELECT `id` FROM `' .static::getTableName(). '` WHERE `article_id` = :articleId;',
+        $idExists = $db->query('SELECT `id` FROM `' . static::getTableName() . '` WHERE `article_id` = :articleId;',
             [':articleId' => $articleId]);
 
-        if (!empty($idExists))
-        {
-            $db->query('UPDATE `' .static::getTableName(). '` SET `views` = `views` + 1 WHERE `article_id` = :articleId;',
+        if (!empty($idExists)) {
+            $db->query('UPDATE `' . static::getTableName() .
+                '` SET `views` = `views` + 1 WHERE `article_id` = :articleId;',
                 ['articleId' => $articleId]);
         }
 
-        if (empty($idExists))
-        {
-            $db->query('INSERT INTO `' .static::getTableName(). '` (`article_id`, `views`) VALUES (:articleId, 0);',
+        if (empty($idExists)) {
+            $db->query('INSERT INTO `' . static::getTableName() . '` (`article_id`, `views`) VALUES (:articleId, 0);',
                 [':articleId' => $articleId]);
         }
     }

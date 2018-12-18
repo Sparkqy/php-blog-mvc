@@ -45,7 +45,8 @@
                             </div>
                             <div class="entry__meta">
                             <span class="entry__meta-links">
-                                <a href="/category/<?= $article->getCatId() ?>"><?= $article->getCategory()->getName() ?></a>
+                                <a href="/category/<?= $article->getCatId() ?>"><?= $article->getCategory()
+                                        ->getName() ?></a>
                             </span>
                             </div>
                         </div>

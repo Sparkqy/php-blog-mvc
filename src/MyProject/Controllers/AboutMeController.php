@@ -13,6 +13,9 @@ class AboutMeController extends AbstractController
 {
     public function view()
     {
-        $this->view->renderHtml('headerMenu/about.php', []);
+        $title = 'Sparky-about';
+        $this->view->renderHtml('headerMenu/about.php', [
+            'title' => $title,
+        ]);
     }
 }

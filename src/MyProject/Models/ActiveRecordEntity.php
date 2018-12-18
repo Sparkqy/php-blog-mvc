@@ -62,7 +62,7 @@ abstract class ActiveRecordEntity
     public static function getTagsByArticleId(int $articleId): ?array
     {
         $db = Db::getInstance();
-        $entities = $db->query('SELECT * FROM `'.static::getTableName().'` JOIN `article_tag_links` AS links ON
+        $entities = $db->query('SELECT * FROM `' . static::getTableName() . '` JOIN `article_tag_links` AS links ON
             (tags.id = links.tag_id) WHERE links.article_id = :articleId;',
             [':articleId' => $articleId,],
             static::class);
@@ -73,7 +73,7 @@ abstract class ActiveRecordEntity
     public static function getArticlesByTags(int $tagId): ?array
     {
         $db = Db::getInstance();
-        $entities = $db->query('SELECT * FROM `'.static::getTableName().'` JOIN `article_tag_links` AS links ON
+        $entities = $db->query('SELECT * FROM `' . static::getTableName() . '` JOIN `article_tag_links` AS links ON
             (articles.id = links.article_id) WHERE links.tag_id = :tagId;',
             [':tagId' => $tagId,],
             static::class);
@@ -86,7 +86,7 @@ abstract class ActiveRecordEntity
         $db = Db::getInstance();
         $entities = $db->query(
             'SELECT * FROM `' . static::getTableName() .
-            '` WHERE `category_id` = :categoryId ORDER BY `created_at` DESC LIMIT '. $limit . ';',
+            '` WHERE `category_id` = :categoryId ORDER BY `created_at` DESC LIMIT ' . $limit . ';',
             [':categoryId' => $categoryId,],
             static::class);
 
@@ -137,7 +137,7 @@ abstract class ActiveRecordEntity
         $itemsPerPage = 5;
         $offset = ($page - 1) * $itemsPerPage;
         $db = Db::getInstance();
-        $entities = $db->query('SELECT * FROM `'.static::getTableName().'` JOIN `article_tag_links` AS links ON
+        $entities = $db->query('SELECT * FROM `' . static::getTableName() . '` JOIN `article_tag_links` AS links ON
             (articles.id = links.article_id) WHERE links.tag_id = :tagId;',
             [':tagId' => $tagId,],
             static::class);
@@ -147,7 +147,8 @@ abstract class ActiveRecordEntity
 
     public static function getTopCommentators(): ?array
     {
-        $sql = 'SELECT `user_name` FROM `' . static::getTableName() . '` GROUP BY `user_id` ORDER BY COUNT(`user_id`) DESC LIMIT 5;';
+        $sql = 'SELECT `user_name` FROM `' . static::getTableName() .
+            '` GROUP BY `user_id` ORDER BY COUNT(`user_id`) DESC LIMIT 5;';
         $db = Db::getInstance();
         $result = $db->query($sql, [], static::class);
 
@@ -157,12 +158,12 @@ abstract class ActiveRecordEntity
     public static function getByOneColumn(string $columnName, $value): ?self
     {
         $db = Db::getInstance();
-        $result = $db->query('SELECT * FROM `' . static::getTableName() . '` WHERE `' . $columnName . '` = :value LIMIT 1;',
-            [':value' => $value],
-            static::class);
+        $result =
+            $db->query('SELECT * FROM `' . static::getTableName() . '` WHERE `' . $columnName . '` = :value LIMIT 1;',
+                [':value' => $value],
+                static::class);
 
-        if ($result === null)
-        {
+        if ($result === null) {
             return null;
         }
 
@@ -268,7 +269,8 @@ abstract class ActiveRecordEntity
         $columnsViaSemicolon = implode(', ', $columns);
         $paramsNamesViaSemicolon = implode(', ', $paramsNames);
 
-        $sql = 'INSERT INTO ' . static::getTableName() . ' (' . $columnsViaSemicolon . ') VALUES (' . $paramsNamesViaSemicolon . ');';
+        $sql = 'INSERT INTO ' . static::getTableName() . ' (' . $columnsViaSemicolon . ') VALUES (' .
+            $paramsNamesViaSemicolon . ');';
         $db = Db::getInstance();
         $db->query($sql, $params2values, static::class);
         $this->id = $db->getLastInsertId();

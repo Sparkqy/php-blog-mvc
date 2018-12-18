@@ -8,6 +8,8 @@
 
 namespace MyProject\View;
 
+use MyProject\Models\Categories\Category;
+
 class View
 {
     private $templatePath;
