@@ -11,10 +11,18 @@ namespace MyProject\Models;
 use MyProject\Exceptions\UserActivationException;
 use MyProject\Services\Db;
 
+/**
+ * Class ActiveRecordEntity
+ * @package MyProject\Models
+ */
 abstract class ActiveRecordEntity
 {
     protected $id;
 
+    /**
+     * @method public getId returns an id from object
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
@@ -26,17 +34,31 @@ abstract class ActiveRecordEntity
         $this->$camelCaseName = $value;
     }
 
+    /**
+     * @method public _set transforms an underscore value to CamelCase value
+     * @param string $string
+     * @return string
+     */
     private function underscoreToCamelCase(string $string): string
     {
         return lcfirst(str_replace('_', '', ucwords($string, '_')));
     }
 
+    /**
+     * @method public static getAll returns an array of every entry from db
+     * @return array
+     */
     public static function getAll(): array
     {
         $db = Db::getInstance();
         return $db->query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
     }
 
+    /**
+     * @method public static getById returns an entity by id from db table
+     * @param int $id
+     * @return ActiveRecordEntity|null
+     */
     public static function getById(int $id): ?self
     {
         $db = Db::getInstance();
@@ -48,6 +70,11 @@ abstract class ActiveRecordEntity
         return $entities ? $entities[0] : null;
     }
 
+    /**
+     * @method public static getByCategoryId returns an array of entries by category id from db
+     * @param int $categoryId
+     * @return array|null
+     */
     public static function getByCategoryId(int $categoryId): ?array
     {
         $db = Db::getInstance();
@@ -59,6 +86,11 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getTagsByArticleId returns an array of tags by article id from db
+     * @param int $articleId
+     * @return array|null
+     */
     public static function getTagsByArticleId(int $articleId): ?array
     {
         $db = Db::getInstance();
@@ -70,6 +102,11 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getArticlesByTags returns an array of articles by tag id from db
+     * @param int $tagId
+     * @return array|null
+     */
     public static function getArticlesByTags(int $tagId): ?array
     {
         $db = Db::getInstance();
@@ -81,6 +118,12 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getLastArticlesByCategoryId returns an array of int $limit articles by category id from db
+     * @param int $categoryId
+     * @param int $limit
+     * @return array|null
+     */
     public static function getLastArticlesByCategoryId(int $categoryId, int $limit): ?array
     {
         $db = Db::getInstance();
@@ -93,6 +136,11 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getLastArticles returns an array of last int $limit articles from db
+     * @param int $limit
+     * @return array|null
+     */
     public static function getLastArticles(int $limit): ?array
     {
         $db = Db::getInstance();
@@ -104,6 +152,11 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getPaginationLastArticles pagination for articles
+     * @param int $page
+     * @return array|null
+     */
     public static function getPaginationLastArticles(int $page): ?array
     {
         $itemsPerPage = 6;
@@ -118,6 +171,12 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getPaginationCategoryId pagination for categories
+     * @param int $categoryId
+     * @param int $page
+     * @return array|null
+     */
     public static function getPaginationCategoryId(int $categoryId, int $page): ?array
     {
         $itemsPerPage = 5;
@@ -145,6 +204,10 @@ abstract class ActiveRecordEntity
         return $entities ? $entities : null;
     }
 
+    /**
+     * @method public static getTopCommentators returns an array of top commentators from db
+     * @return array|null
+     */
     public static function getTopCommentators(): ?array
     {
         $sql = 'SELECT `user_name` FROM `' . static::getTableName() .
@@ -155,6 +218,12 @@ abstract class ActiveRecordEntity
         return $result ? $result : null;
     }
 
+    /**
+     * @method public static getByOneColumn returns an entity by column name and its value from db
+     * @param string $columnName
+     * @param $value
+     * @return ActiveRecordEntity|null
+     */
     public static function getByOneColumn(string $columnName, $value): ?self
     {
         $db = Db::getInstance();
@@ -170,6 +239,12 @@ abstract class ActiveRecordEntity
         return $result[0];
     }
 
+    /**
+     * @method public static getByOneColumnArray returns an array of entities by column name and its value from db
+     * @param string $columnName
+     * @param $value
+     * @return array|null
+     */
     public static function getByOneColumnArray(string $columnName, $value): ?array
     {
         $db = Db::getInstance();
@@ -180,6 +255,10 @@ abstract class ActiveRecordEntity
         return !empty($result) ? $result : null;
     }
 
+    /**
+     * @method public static getPopularArticles returns an array of most popular 6 articles from db
+     * @return array|null
+     */
     public static function getPopularArticles(): ?array
     {
         $db = Db::getInstance();
@@ -194,6 +273,10 @@ abstract class ActiveRecordEntity
         return !empty($result) ? $result : null;
     }
 
+    /**
+     * @method public static getLastComments returns an array of last 10 comments from db
+     * @return array|null
+     */
     public static function getLastComments(): ?array
     {
         $db = Db::getInstance();
@@ -204,6 +287,9 @@ abstract class ActiveRecordEntity
         return !empty($result) ? $result : null;
     }
 
+    /**
+     * @method public save updates or inserts data to db
+     */
     public function save(): void
     {
         $mappedProperties = $this->mapPropertiesToDbFormat();
@@ -214,11 +300,20 @@ abstract class ActiveRecordEntity
         }
     }
 
+    /**
+     * @method private camelCaseToUnderscore transforms CamelCase string to underscore
+     * @param string $source
+     * @return string
+     */
     private function camelCaseToUnderscore(string $source): string
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $source));
     }
 
+    /**
+     * @method private mapPropertiesToDbFormat transforms object's data to db format
+     * @return array
+     */
     private function mapPropertiesToDbFormat(): array
     {
         $reflector = new \ReflectionObject($this);
@@ -234,6 +329,10 @@ abstract class ActiveRecordEntity
         return $mappedProperties;
     }
 
+    /**
+     * @method private update updates data to db
+     * @param array $mappedProperties
+     */
     private function update(array $mappedProperties): void
     {
         $columns2params = [];
@@ -253,6 +352,10 @@ abstract class ActiveRecordEntity
         $db->query($sql, $params2values, static::class);
     }
 
+    /**
+     * @method private insert inserts data to db
+     * @param array $mappedProperties
+     */
     private function insert(array $mappedProperties): void
     {
         $filteredProperties = array_filter($mappedProperties);
@@ -277,6 +380,9 @@ abstract class ActiveRecordEntity
         $this->refresh();
     }
 
+    /**
+     * @method private refresh refreshes data in db
+     */
     private function refresh(): void
     {
         $objectFromDb = static::getById($this->id);
@@ -291,6 +397,9 @@ abstract class ActiveRecordEntity
 
     }
 
+    /**
+     * @method public delete deletes entry in db
+     */
     public function delete(): void
     {
         $db = Db::getInstance();
@@ -301,6 +410,11 @@ abstract class ActiveRecordEntity
         $this->id = null;
     }
 
+    /**
+     * @method public static validate returns string value if validation OK
+     * @param string $value
+     * @return string
+     */
     public static function validate($value = ''): string
     {
         $value = trim(stripcslashes(strip_tags(htmlspecialchars($value))));
@@ -308,5 +422,8 @@ abstract class ActiveRecordEntity
         return $value;
     }
 
+    /**
+     * @return string
+     */
     abstract protected static function getTableName(): string;
 }
