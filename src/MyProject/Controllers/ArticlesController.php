@@ -37,7 +37,7 @@ class ArticlesController extends AbstractController
         $prevArticle = Article::prevArticle($articleId);
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
         $tags = Tag::getTagsByArticleId($articleId);
-        ArticleViewInfo::incViews($articleId);
+        $article->incViews($articleId);
         $views = ArticleViewInfo::getByOneColumn('article_id', $articleId);
 
         $this->view->renderHtml('articles/view.php', [
@@ -141,7 +141,7 @@ class ArticlesController extends AbstractController
 
         if (!empty($_POST)) {
             try {
-                $comment = Comment::addCommentFromArray($_POST);
+                Comment::addCommentFromArray($_POST);
             } catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('articles/view.php', ['error' => $e->getMessage()]);
                 return;

@@ -14,10 +14,16 @@ use MyProject\Models\ActiveRecordEntity;
 class Category extends ActiveRecordEntity
 {
     protected $name;
+    protected $createdAt;
 
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
+    }
+
+    public function getCreatedAt(): string 
+    {
+    	return (string)$this->createdAt;
     }
 
     protected static function getTableName(): string

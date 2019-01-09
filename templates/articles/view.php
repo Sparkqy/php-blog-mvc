@@ -122,7 +122,7 @@
                                     <div class="comment__content">
 
                                         <div class="comment__info">
-                                            <cite><?= $comment->getName() ?></cite>
+                                            <cite><?= $comment->getCommentatorName($comment->getUserId()) ?></cite>
 
                                             <div class="comment__meta">
                                                 <time class="comment__time">Dec 16, 2017 @ 23:05</time>

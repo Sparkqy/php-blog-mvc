@@ -16,7 +16,7 @@ class ContactMessage extends ActiveRecordEntity
 {
     protected $senderName;
     protected $text;
-    protected $date;
+    protected $createdAt;
 
     public function getSenderName(): string
     {
@@ -28,9 +28,9 @@ class ContactMessage extends ActiveRecordEntity
         return (string)$this->text;
     }
 
-    public function getDate(): string
+    public function getCreatedAt(): string
     {
-        return (string)$this->date;
+        return (string)$this->createdAt;
     }
 
     public function setSenderName(string $senderName): void

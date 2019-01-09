@@ -16,31 +16,36 @@ class Comment extends ActiveRecordEntity
     protected $articleId;
     protected $text;
     protected $userId;
-    protected $userName;
+    protected $createdAt;
 
     public function getArticleId(): int
     {
-        return $this->articleId;
+        return (int)$this->articleId;
     }
 
     public function getText(): string
     {
-        return $this->text;
+        return (string)$this->text;
     }
 
     public function getUserId(): int
     {
-        return $this->userId;
+        return (int)$this->userId;
     }
 
-    public function getName(): string
+    public function getCreatedAt(): string 
     {
-        return $this->userName;
+        return (string)$this->createdAt;
     }
 
-    public function setText(string $text): void
+    public function getCommentatorName(int $userId): ?string
     {
-        $this->text = (string)$text;
+        $db = Db::getInstance();
+        $commentatorName = $db->query(
+            'SELECT `nickname` FROM `users` WHERE `id` = :userId;',
+            [':userId' => $userId]);
+
+        return $commentatorName ? (string)$commentatorName : null;
     }
 
     public static function getTableName(): string
@@ -48,21 +53,23 @@ class Comment extends ActiveRecordEntity
         return 'comments';
     }
 
-    public static function addCommentFromArray(array $fields): Comment
+    public function setText(string $text): void
+    {
+        $this->text = (string)$text;
+    }
+
+    public static function addCommentFromArray(array $fields): void
     {
         if (empty($fields['text'])) {
-            throw new InvalidArgumentException('Пусто');
+            throw new InvalidArgumentException('Empty');
         }
 
         $comment = new Comment();
 
-        $comment->userName = $fields['user_name'];
         $comment->articleId = $fields['article_id'];
         $comment->userId = $fields['user_id'];
-        $comment->text = $fields['text'];
+        $comment->text = $this->setText($fields['text']);
 
         $comment->save();
-
-        return $comment;
     }
 }

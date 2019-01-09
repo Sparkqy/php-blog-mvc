@@ -14,14 +14,21 @@ use MyProject\Models\ActiveRecordEntity;
 class Tag extends ActiveRecordEntity
 {
     protected $name;
+    protected $createdAt;
+
+
+    public function getName(): string
+    {
+        return (string)$this->name;
+    }
+
+    public function getCreatedAt(): string 
+    {
+    	return (string)$this->createdAt;
+    }
 
     public static function getTableName(): string
     {
         return 'tags';
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 }
