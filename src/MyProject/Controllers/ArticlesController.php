@@ -27,18 +27,18 @@ class ArticlesController extends AbstractController
 {
     public function view(int $articleId): void
     {
+        // Article
         $article = Article::getById($articleId);
         if ($article === null) {
             throw new NotFoundException();
         }
 
+        // Article data
         $title = $article->getName();
         $nextArticle = Article::nextArticle($articleId);
         $prevArticle = Article::prevArticle($articleId);
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
         $tags = Tag::getTagsByArticleId($articleId);
-        $article->incViews($articleId);
-        $views = ArticleViewInfo::getByOneColumn('article_id', $articleId);
 
         $this->view->renderHtml('articles/view.php', [
             'title' => $title,
@@ -47,7 +47,6 @@ class ArticlesController extends AbstractController
             'prevArticle' => $prevArticle,
             'tags' => $tags,
             'comments' => $comments,
-            'views' => $views,
         ]);
     }
 

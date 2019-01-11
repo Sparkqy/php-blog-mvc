@@ -6,15 +6,20 @@
 
             <div class="featured__column featured__column--big">
 
-                <div class="entry" style="background-image:url('/images/thumbs/featured/featured-guitarman.jpg');">
+                <div class="entry" style="background-image:url('<?= $featuredArticleBig->getImg1() ?>');">
 
                     <div class="entry__content">
-                        <span class="entry__category"><a
-                                    href="/category/<?= $featuredArticleBig->getCatId() ?>"><?= $featuredArticleBig->getCategory()
-                                    ->getName() ?></a></span>
+                        <span class="entry__category">
+                            <a href="/category/<?= $featuredArticleBig->getCatId() ?>">
+                                <?= $featuredArticleBig->getCategory()->getName() ?>
+                            </a>
+                        </span>
 
-                        <h1><a href="/articles/<?= $featuredArticleBig->getId() ?>"
-                               title=""><?= $featuredArticleBig->getName() ?></a></h1>
+                        <h1>
+                            <a href="/articles/<?= $featuredArticleBig->getId() ?>" title="">
+                                <?= $featuredArticleBig->getName() ?>
+                            </a>
+                        </h1>
 
                         <div class="entry__info">
                             <a href="" class="entry__profile-pic">
@@ -34,11 +39,11 @@
 
             <div class="featured__column featured__column--small">
                 <?php foreach ($featuredArticles as $article): ?>
-                    <div class="entry" style="background-image:url('images/thumbs/featured/featured-guitarman.jpg');">
+                    <div class="entry" style="background-image:url('<?= $article->getImg1() ?>');">
 
                         <div class="entry__content">
                             <span class="entry__category"><a
-                                        href="/category/<?= $article->getCatId() ?>"><?= $featuredArticleBig->getCategory()
+                                        href="/category/<?= $article->getCatId() ?>"><?= $article->getCategory()
                                         ->getName() ?></a></span>
 
                             <h1><a href="/articles/<?= $article->getId() ?>" title=""><?= $article->getName() ?></a>
@@ -51,7 +56,7 @@
 
                                 <ul class="entry__meta">
                                     <li><a href="#0"><?= $article->getAuthor()->getNickname() ?></a></li>
-                                    <li><?= date('l F, Y', strtotime($featuredArticleBig->getCreatedAt())) ?></li>
+                                    <li><?= date('l F, Y', strtotime($article->getCreatedAt())) ?></li>
                                 </ul>
                             </div>
                         </div> <!-- end entry__content -->
@@ -85,7 +90,7 @@
 
                         <div class="entry__thumb">
                             <a href="/articles/<?= $article->getId() ?>" class="entry__thumb-link">
-                                <img src="<?= $article->getImgPath() ?>" alt="<?= $article->getName() ?>">
+                                <img src="<?= $article->getImg1() ?>" alt="<?= $article->getName() ?>">
                             </a>
                         </div>
 
@@ -102,13 +107,14 @@
                             </div>
                             <div class="entry__excerpt">
                                 <p>
-                                    <?= substr($article->getText(), 0, 100) ?>...
+                                    <?= substr($article->getShortDescription(), 0, 100) ?>...
                                 </p>
                             </div>
                             <div class="entry__meta">
                             <span class="entry__meta-links">
-                                <a href="/category/<?= $article->getCatId() ?>"><?= $article->getCategory()
-                                        ->getName() ?></a>
+                                <a href="/category/<?= $article->getCatId() ?>">
+                                    <?= $article->getCategory()->getName() ?>
+                                </a>
                             </span>
                             </div>
                         </div>
@@ -126,14 +132,10 @@
 
                 <nav class="pgn">
                     <ul>
-                        <?php foreach ($pagination->buttons as $button) : ?>
-                            <?php if ($button->isActive) : ?>
-                                <li><span class="pgn__num"><a href="?page=<?= $button->page ?>"><?= $button->text ?></a></span>
-                                </li>
-                            <?php else : ?>
-                                <li><?= $button->text ?></li>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
+                        <li>
+                            <span class="pgn__num"></span>
+                        </li>
+
                     </ul>
                 </nav>
 

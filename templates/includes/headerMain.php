@@ -42,7 +42,7 @@
 
             <div class="header__logo">
                 <a class="logo" href="/">
-                    Sparky-blog
+                    Kiev underground!
                 </a>
             </div> <!-- end header__logo -->
 
@@ -71,6 +71,7 @@
                                title="Search for:" autocomplete="off">
                     </label>
                     <input type="submit" class="search-submit" value="Search">
+
                 </form>
 
                 <a href="#0" title="Close Search" class="header__overlay-close">Close</a>
@@ -87,36 +88,39 @@
                 <ul class="header__nav">
                     <li class="current"><a href="/" title="">Home</a></li>
                     <li class="has-children">
-                        <a href="#0" title="">Categories</a>
+                        <a href="#0" title="">Categories!</a>
                         <ul class="sub-menu">
 
-                            <?php foreach ($categories as $category): ?>
+                            <?php foreach ($categories as $cat): ?>
                                 <li>
-                                    <a href="/category/<?= $category->getId() ?>"
-                                       title=""><?= $category->getName() ?></a>
+                                    <a href="/category/<?= $cat->getId() ?>"
+                                       title=""><?= $cat->getName() ?></a>
                                 </li>
                             <?php endforeach; ?>
 
                         </ul>
                     </li>
-                    <li><a href="style-guide.html" title="">Styles</a></li>
-                    <li><a href="/about" title="">About</a></li>
-                    <li><a href="/contact" title="">Contact</a></li>
+                    <li><a href="/about" title="">About us</a></li>
+                    <?php if (!empty($user)): ?>
+                        <li class="has-children">
+                            <a href="#0" title=""><?= $user->getNickname() ?>!</a>
+                            <ul class="sub-menu pull-right">
+                                <li><a href="/users/<?= $user->getId() ?>/account">Account</a></li>
+                                <li><a href='/users/logout'>Sign Out</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="has-children">
+                            <a href="#0" title="">Sign In & Out!</a>
+                            <ul class="sub-menu">
+                                <li><a href='/users/register'>Register</a></li>
+                                <li><a href='/users/login'>Log in</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
 
                     <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
                         <a href="/admin" class="btn">Admin panel</a>
-                    <?php endif; ?>
-
-                    <?php if (!empty($user)): ?>
-                        <div class="pull-right">
-                            <li>Hi, <?= $user->getNickname() ?></li>
-                            <li><a href='/users/logout'>Sign Out</a></li>
-                        </div>
-                    <?php else: ?>
-                        <div class="pull-right">
-                            <li><a href='/users/register'>Register</a></li>
-                            <li><a href='/users/login'>Log in</a></li>
-                        </div>
                     <?php endif; ?>
 
                 </ul> <!-- end header__nav -->

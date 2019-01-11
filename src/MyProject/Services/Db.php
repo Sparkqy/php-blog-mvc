@@ -9,6 +9,7 @@
 namespace MyProject\Services;
 
 use MyProject\Exceptions\DbException;
+use PDO;
 
 class Db
 {
@@ -20,13 +21,15 @@ class Db
 
         try
         {
-            $dbOptions = (require __DIR__ . '/../settings.php')['db'];
-            $this->pdo = new \PDO(
+            $dbOptions = (require __DIR__ . '/../../settings.php')['db'];
+            $this->pdo = new PDO(
                 'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['db_name'],
                 $dbOptions['user'],
                 $dbOptions['password']
             );
             $this->pdo->exec('SET NAMES UTF8');
+
+
         } catch (\PDOException $e)
         {
             throw new DbException('Database connecting error: ' . $e->getMessage());
@@ -38,7 +41,7 @@ class Db
         return $this->pdo->lastInsertId();
     }
     
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (self::$instance === null)
         {

@@ -8,7 +8,7 @@
             <h3>Popular Posts</h3>
 
             <div class="block-1-2 block-m-full popular__posts">
-                <?php foreach ($popularArticles as $article): ?>
+                <?php foreach ($recentArticles as $article): ?>
                     <article class="col-block popular__post">
                         <a href="/articles/<?= $article->getId() ?>" class="popular__thumb">
                             <img src="/images/thumbs/small/wheel-150.jpg" alt="">
@@ -29,8 +29,7 @@
             <h3>About Project</h3>
 
             <p>
-                This website was created for educational purposes. All code is on github <a
-                        href="https://github.com/SparkyGit/php-blog-mvc">https://github.com/SparkyGit/php-blog-mvc</a>
+                Simple blog about Rave culture. Educational purposes only.
             </p>
         </div> <!-- end about -->
 

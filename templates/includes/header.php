@@ -42,7 +42,7 @@
 
             <div class="header__logo">
                 <a class="logo" href="/">
-                    Sparky-blog
+                    Kiev underground!
                 </a>
             </div> <!-- end header__logo -->
 
@@ -90,10 +90,10 @@
                         <a href="#0" title="">Categories</a>
                         <ul class="sub-menu">
 
-                            <?php foreach ($categories as $category): ?>
+                            <?php foreach ($categories as $cat): ?>
                                 <li>
-                                    <a href="/category/<?= $category->getId() ?>"
-                                       title=""><?= $category->getName() ?></a>
+                                    <a href="/category/<?= $cat->getId() ?>"
+                                       title=""><?= $cat->getName() ?></a>
                                 </li>
                             <?php endforeach; ?>
 

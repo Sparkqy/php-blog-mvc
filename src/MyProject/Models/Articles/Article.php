@@ -16,11 +16,13 @@ use MyProject\Services\Db;
 
 class Article extends ActiveRecordEntity
 {
+    protected $authorId;
     protected $categoryId;
     protected $name;
+    protected $shortDescription;
     protected $text;
-    protected $authorId;
-    protected $image;
+    protected $image1;
+    protected $image2;
     protected $createdAt;
 
     protected static function getTableName(): string
@@ -28,9 +30,14 @@ class Article extends ActiveRecordEntity
         return 'articles';
     }
 
-    public function getImgPath(): string
+    public function getImg1(): string
     {
-        return $this->image;
+        return (string)$this->image1;
+    }
+
+    public function getImg2(): string
+    {
+        return (string)$this->image2;
     }
 
     public function getAuthor(): User
@@ -45,12 +52,12 @@ class Article extends ActiveRecordEntity
 
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     public function getText(): string
     {
-        return $this->text;
+        return (string)$this->text;
     }
 
     public function getCatId(): int
@@ -60,42 +67,52 @@ class Article extends ActiveRecordEntity
 
     public function getCreatedAt(): string
     {
-        return $this->createdAt;
+        return (string)$this->createdAt;
+    }
+
+    public function getShortDescription(): string
+    {
+        return (string)$this->shortDescription;
+    }
+
+    public function setShortDescription(string $shortDescription): void
+    {
+        $this->shortDescription = (string)$shortDescription;
     }
 
     public function setAuthor(User $author): void
     {
-        $this->authorId = $author->getId();
+        $this->authorId = (int)$author->getId();
     }
 
-    public function setName(string $newName): void
+    public function setName(string $name): void
     {
-        $this->name = $newName;
+        $this->name = (string)$name;
     }
 
-    public function setText(string $newText): void
+    public function setText(string $text): void
     {
-        $this->text = $newText;
+        $this->text = (string)$text;
     }
 
-    public function setImage(string $imagePath): void
+    public function setImage1(string $image1): void
     {
-        $this->image = $imagePath;
+        $this->image1 = (string)$image1;
     }
 
-    public function setAuthorId(string $newAuthorId): void
+    public function setImage2(string $image2): void
     {
-        $this->authorId = $newAuthorId;
+        $this->image2 = (string)$image2;
     }
 
-    public function setTags(string $tags): void
+    public function setAuthorId(string $authorId): void
     {
-        $this->tagId = $tags;
+        $this->authorId = (string)$authorId;
     }
 
     public function setCatId(string $catId): void
     {
-        $this->categoryId = $catId;
+        $this->categoryId = (string)$catId;
     }
 
     public static function createFromArray(array $fields, User $author): Article
@@ -104,8 +121,12 @@ class Article extends ActiveRecordEntity
             throw new InvalidArgumentException('Empty article\'s name field.');
         }
 
-        if (empty($fields['aImage'])) {
-            throw new InvalidArgumentException('Empty article\'s image field.');
+        if (empty($fields['aImage1'])) {
+            throw new InvalidArgumentException('Empty article\'s first image field.');
+        }
+
+        if (empty($fields['aDesc'])) {
+            throw new InvalidArgumentException('Empty article\'s description field.');
         }
 
         if (empty($fields['aText'])) {
@@ -122,13 +143,15 @@ class Article extends ActiveRecordEntity
 
         $article = new Article();
 
-        $article->setAuthor($author);
-        $article->setName($fields['aName']);
-        $article->setImage($fields['aImage']);
-        $article->setCatId($fields['aCatId']);
-        $article->setText($fields['aText']);
+        $article
+            ->setAuthor($author)
+            ->setCatId($fields['aCatId'])
+            ->setName($fields['aName'])
+            ->setImage1($fields['aImage1'])
+            ->setImage2($fields['aImage2'])
+            ->setText($fields['aText'])
 
-        $article->save();
+            ->save();
 
         return $article;
     }

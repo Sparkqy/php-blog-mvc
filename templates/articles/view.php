@@ -19,16 +19,23 @@
                 </h1>
                 <ul class="s-content__header-meta">
                     <li class="date"><?= date('l F, Y', strtotime($article->getCreatedAt())) ?></li>
-                    <li><?= $article->getCategory()->getName() ?></li>
+                    <li>category: <?= $article->getCategory()->getName() ?></li>
                     <br>
-                    <li><?= $views->getViews() ?> views</li>
                 </ul>
 
             </div> <!-- end s-content__header -->
 
+            <div class="col-full s-content__main">
+
+                <p>
+                    <?= $article->getShortDescription() ?>
+                </p>
+
+            </div>
+
             <div class="s-content__media col-full">
                 <div class="s-content__post-thumb">
-                    <img src="/<?= $article->getImgPath() ?>" alt="">
+                    <img src="/<?= $article->getImg1() ?>" alt="">
                 </div>
             </div> <!-- end s-content__media -->
 

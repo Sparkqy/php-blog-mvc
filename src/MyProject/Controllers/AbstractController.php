@@ -19,22 +19,26 @@ class AbstractController
 {
     protected $view;
     protected $user;
-    protected $popularArticles;
+    protected $recentArticles;
     protected $tagsAll;
     protected $categories;
 
     public function __construct()
     {
-        $this->categories = Category::getAll();
-        $this->user = UsersAuthService::getUserByToken();
+        // View
         $this->view = new View(__DIR__ . '/../../../templates');
-        $this->popularArticles = Article::getPopularArticles();
-        $this->tagsAll = Tag::getAll();
 
-        $this->view->setExtraVars('title', $this->title);
+        // User
+        $this->user = UsersAuthService::getUserByToken();
+
+        // Header & footer data
+        $this->categories = Category::getAll();
+        $this->tagsAll = Tag::getAll();
+        $this->recentArticles = Article::getLastArticles(2);
+
         $this->view->setExtraVars('categories', $this->categories);
         $this->view->setExtraVars('user', $this->user);
-        $this->view->setExtraVars('popularArticles', $this->popularArticles);
+        $this->view->setExtraVars('recentArticles', $this->recentArticles);
         $this->view->setExtraVars('tagsAll', $this->tagsAll);
     }
 }

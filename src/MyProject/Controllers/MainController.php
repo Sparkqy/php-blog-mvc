@@ -20,27 +20,16 @@ class MainController extends AbstractController
 {
     public function main()
     {
-        $title = 'Sparky-blog';
-        $articlesAll = Article::getAll();
-        $featuredArticles = Article::getLastArticles(3);
+        $title = 'Kiev underground!';
+        $articles = Article::getAll();
+        $featuredArticles = Article::getLastArticles(2);
         $featuredArticleBig = array_shift($featuredArticles);
-
-        $topCommentators = Comment::getTopCommentators();
-
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $articlesCount = count($articlesAll);
-        if ($articlesCount > 6) {
-            $pagination = new Pagination($articlesCount, $page);
-            $articles = Article::getPaginationLastArticles($page);
-        }
 
         $this->view->renderHtml('main/main.php', [
             'title' => $title,
             'articles' => $articles,
-            'pagination' => $pagination,
             'featuredArticles' => $featuredArticles,
             'featuredArticleBig' => $featuredArticleBig,
-            'topCommentators' => $topCommentators,
         ]);
     }
 }

@@ -17,32 +17,17 @@ class CategoriesController extends AbstractController
 {
     public function view(int $categoryId)
     {
+        // Category
         $category = Category::getById($categoryId);
 
-        $articlesAll = Article::getByCategoryId($categoryId);
-        if ($articlesAll === null) {
-            $this->view->renderHtml(
-                'categories/category.php', [
-                    'error' => 'No articles by this category yet.',
-                    'category' => null,
-                    'articles' => null]
-            );
-            return;
-        }
+        // Article by category data
+        $articles = Article::getByCategoryId($categoryId);
 
-
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $articlesCount = count($articlesAll);
-
-        if ($articlesCount > 0) {
-            $pagination = new Pagination($articlesCount, $page);
-            $articles = Article::getPaginationCategoryId($categoryId, $page);
-        }
-
+        // Render category.php view
         $this->view->renderHtml('categories/category.php', [
-                'articles' => $articles,
                 'category' => $category,
-                'pagination' => $pagination]
+                'articles' => $articles,
+            ]
         );
     }
 }

@@ -25,7 +25,7 @@ abstract class ActiveRecordEntity
      */
     public function getId(): int
     {
-        return $this->id;
+        return (int)$this->id;
     }
 
     public function __set($name, $value)
@@ -51,7 +51,9 @@ abstract class ActiveRecordEntity
     public static function getAll(): array
     {
         $db = Db::getInstance();
-        return $db->query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
+        $entities = $db->query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
+
+        return $entities ? $entities : null;
     }
 
     /**
@@ -250,38 +252,6 @@ abstract class ActiveRecordEntity
         $db = Db::getInstance();
         $result = $db->query('SELECT * FROM `' . static::getTableName() . '` WHERE `' . $columnName . '` = :value;',
             [':value' => $value],
-            static::class);
-
-        return !empty($result) ? $result : null;
-    }
-
-    /**
-     * @method public static getPopularArticles returns an array of most popular 6 articles from db
-     * @return array|null
-     */
-    public static function getPopularArticles(): ?array
-    {
-        $db = Db::getInstance();
-        $sql =
-            'SELECT articles.id, articles.category_id, articles.author_id, articles.name, articles.text, articles.image, articles.created_at
-            FROM `articles`
-            JOIN `article_views_info`
-            ON articles.id = article_views_info.article_id 
-            ORDER BY `views` DESC LIMIT 6;';
-        $result = $db->query($sql, [], static::class);
-
-        return !empty($result) ? $result : null;
-    }
-
-    /**
-     * @method public static getLastComments returns an array of last 10 comments from db
-     * @return array|null
-     */
-    public static function getLastComments(): ?array
-    {
-        $db = Db::getInstance();
-        $result = $db->query('SELECT * FROM `' . static::getTableName() . '` ORDER BY `id` DESC LIMIT 10;',
-            [],
             static::class);
 
         return !empty($result) ? $result : null;

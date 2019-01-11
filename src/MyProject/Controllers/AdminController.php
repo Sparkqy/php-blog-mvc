@@ -41,17 +41,4 @@ class AdminController extends AbstractController
             'pagination' => $pagination,
         ]);
     }
-
-    public function lastComments()
-    {
-        if ($this->user === null || $this->user->getRole() !== 'admin') {
-            throw new NotFoundException();
-        }
-
-        $recentComments = Comment::getLastComments();
-
-        $this->view->renderHtml('admin/adminLastComments.php', [
-            'recentComments' => $recentComments,
-        ]);
-    }
 }

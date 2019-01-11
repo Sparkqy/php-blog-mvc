@@ -1785,7 +1785,6 @@ button::-moz-focus-inner, input::-moz-focus-inner {
     line-height: 40px;
     display: block;
     font-weight: 700;
-    font-style: italic;
     letter-spacing: 5px;
     color: #fff;
     border: none;
