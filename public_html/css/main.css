@@ -4267,25 +4267,3 @@ footer h4::after {
 /* -------------------------------------------------------------------
  * ## comments
  * ------------------------------------------------------------------- */
-.article__admin {
-    position: absolute;
-    right: 75px;
-    top: 35px;
-    background: #f2f2f2;
-}
-
-@media only screen and (max-width: 800px) {
-    .article__admin {
-        margin-top: -80px;
-        text-align: center;
-        position: static;
-    }
-}
-
-@media only screen and (max-width: 1024px) {
-    .article__admin {
-        margin-top: -80px;
-        text-align: center;
-        position: static;
-    }
-}

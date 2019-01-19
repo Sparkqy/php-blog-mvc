@@ -99,25 +99,27 @@
 
                         </ul>
                     </li>
-
-                    <li><a href="style-guide.html" title="">Styles</a></li>
-                    <li><a href="/about" title="">About</a></li>
-                    <li><a href="/contact" title="">Contact</a></li>
+                    <li><a href="/about" title="">About us</a></li>
+                    <?php if (!empty($user)): ?>
+                        <li class="has-children">
+                            <a href="#0" title=""><?= $user->getNickname() ?>!</a>
+                            <ul class="sub-menu pull-right">
+                                <li><a href="/users/<?= $user->getId() ?>/account">Account</a></li>
+                                <li><a href='/users/logout'>Sign Out</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="has-children">
+                            <a href="#0" title="">Sign In & Out!</a>
+                            <ul class="sub-menu">
+                                <li><a href='/users/register'>Register</a></li>
+                                <li><a href='/users/login'>Log in</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
 
                     <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
                         <a href="/admin" class="btn">Admin panel</a>
-                    <?php endif; ?>
-
-                    <?php if (!empty($user)): ?>
-                        <div class="pull-right">
-                            <li>Hi, <?= $user->getNickname() ?></li>
-                            <li><a href='/users/logout'>Sign Out</a></li>
-                        </div>
-                    <?php else: ?>
-                        <div class="pull-right">
-                            <li><a href='/users/register'>Register</a></li>
-                            <li><a href='/users/login'>Log in</a></li>
-                        </div>
                     <?php endif; ?>
 
                 </ul> <!-- end header__nav -->

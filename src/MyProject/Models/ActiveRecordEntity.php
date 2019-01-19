@@ -260,7 +260,7 @@ abstract class ActiveRecordEntity
     /**
      * @method public save updates or inserts data to db
      */
-    public function save(): void
+    public function save(): int
     {
         $mappedProperties = $this->mapPropertiesToDbFormat();
         if ($this->id !== null) {
@@ -268,6 +268,8 @@ abstract class ActiveRecordEntity
         } else {
             $this->insert($mappedProperties);
         }
+
+        return $this->id;
     }
 
     /**
@@ -284,16 +286,18 @@ abstract class ActiveRecordEntity
      * @method private mapPropertiesToDbFormat transforms object's data to db format
      * @return array
      */
-    private function mapPropertiesToDbFormat(): array
+    protected function mapPropertiesToDbFormat(): array
     {
         $reflector = new \ReflectionObject($this);
+
         $properties = $reflector->getProperties();
 
         $mappedProperties = [];
         foreach ($properties as $property) {
             $propertyName = $property->getName();
             $propertyNameAsUnderscore = $this->camelCaseToUnderscore($propertyName);
-            $mappedProperties[$propertyNameAsUnderscore] = $this->$propertyName;
+            $propertyValue = $this->$propertyName;
+            $mappedProperties[$propertyNameAsUnderscore] = $propertyValue;
         }
 
         return $mappedProperties;
@@ -348,6 +352,79 @@ abstract class ActiveRecordEntity
         $db->query($sql, $params2values, static::class);
         $this->id = $db->getLastInsertId();
         $this->refresh();
+    }
+
+    /**
+     * @method public saveArray saves few entries to db
+     * @return int
+     */
+    public function saveArray(): int
+    {
+        $mappedProperties = $this->mapPropertiesToDbFormat();
+        $mappedPropertiesArray = $this->mapArrayPropertiesToDbFormat($mappedProperties);
+        if ($this->id !== null) {
+            $this->update($mappedPropertiesArray);
+        } else {
+            $this->insertArray($mappedPropertiesArray);
+        }
+
+        return $this->id;
+    }
+
+    /**
+     * @method private mapArrayPropertiesToDbFormat transforms array data to db format for saveArray method
+     * @param array $mappedProperties
+     * @return array
+     */
+    private function mapArrayPropertiesToDbFormat(array $mappedProperties): array
+    {
+        $finalArray = [];
+        $commonProps = [];
+        foreach ($mappedProperties as $propertyName => $propertyValue) {
+            if (!is_array($propertyValue)) {
+                $commonProps[$propertyName] = $propertyValue;
+            } else {
+                foreach ($propertyValue as $key => $value) {
+                    $singleArray[$propertyName] = $value;
+                    $finalArray[] = $singleArray;
+                }
+            }
+        }
+        foreach ($finalArray as &$array) {
+            $array = array_merge($array, $commonProps);
+        }
+
+        return $finalArray;
+    }
+
+    /**
+     * @method private insertArray inserts few entries to db
+     * @param array $mappedProperties
+     */
+    private function insertArray(array $mappedProperties): void
+    {
+        $filteredProperties = array_filter($mappedProperties);
+
+        foreach ($filteredProperties as $property) {
+            $columns = [];
+            $paramsNames = [];
+            $params2values = [];
+            foreach ($property as $columnName => $value) {
+                $columns[] = '`' . $columnName . '`';
+                $paramsNames[] = ':' . $columnName;
+                $params2values[':' . $columnName] = $value;
+            }
+
+            $columnsViaSemicolon = implode(', ', $columns);
+            $paramsNamesViaSemicolon = implode(', ', $paramsNames);
+
+            $sql = 'INSERT INTO ' . static::getTableName() . ' (' . $columnsViaSemicolon . ') VALUES (' .
+                $paramsNamesViaSemicolon . ');';
+            $db = Db::getInstance();
+            $db->query($sql, $params2values, static::class);
+            $this->id = $db->getLastInsertId();
+            $this->refresh();
+        }
     }
 
     /**

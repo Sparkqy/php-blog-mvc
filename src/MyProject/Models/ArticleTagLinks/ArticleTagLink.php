@@ -10,6 +10,7 @@ namespace MyProject\Models\ArticleTagLinks;
 
 
 use MyProject\Models\ActiveRecordEntity;
+use MyProject\Services\Db;
 
 class ArticleTagLink extends ActiveRecordEntity
 {
@@ -19,5 +20,16 @@ class ArticleTagLink extends ActiveRecordEntity
     public static function getTableName(): string
     {
         return 'article_tag_links';
+    }
+
+    public function setTagId(array $tags): void
+    {
+
+        $this->tagId = (array)$tags;
+    }
+
+    public function setArticleId(int $articleId): void
+    {
+        $this->articleId = (int)$articleId;
     }
 }

@@ -6,7 +6,7 @@
 
             <div class="featured__column featured__column--big">
 
-                <div class="entry" style="background-image:url('<?= $featuredArticleBig->getImg1() ?>');">
+                <div class="entry" style="background-image:url('<?= $featuredArticleBig->getMainImage() ?>')">
 
                     <div class="entry__content">
                         <span class="entry__category">
@@ -39,7 +39,7 @@
 
             <div class="featured__column featured__column--small">
                 <?php foreach ($featuredArticles as $article): ?>
-                    <div class="entry" style="background-image:url('<?= $article->getImg1() ?>');">
+                    <div class="entry" style="background-image:url('<?= $article->getMainImage() ?>')">
 
                         <div class="entry__content">
                             <span class="entry__category"><a
@@ -51,7 +51,8 @@
 
                             <div class="entry__info">
                                 <a href="" class="entry__profile-pic">
-                                    <img class="avatar" src="images/avatars/user-03.jpg" alt="">
+                                    <img class="avatar" src="images/avatars/user-03.jpg"
+                                         alt="<?= $article->getAuthor()->getNickname() ?>">
                                 </a>
 
                                 <ul class="entry__meta">
@@ -87,10 +88,9 @@
             <?php if ($articles !== null): ?>
                 <?php foreach ($articles as $article): ?>
                     <article class="masonry__brick entry format-standard" data-aos="fade-up">
-
                         <div class="entry__thumb">
                             <a href="/articles/<?= $article->getId() ?>" class="entry__thumb-link">
-                                <img src="<?= $article->getImg1() ?>" alt="<?= $article->getName() ?>">
+                                <img src="<?= $article->getMainImage() ?>" alt="<?= $article->getName() ?>">
                             </a>
                         </div>
 

@@ -9,6 +9,7 @@
 
                 <?php if (isset($rSuccess)): ?>
                     <p><?= $rSuccess ?></p>
+                    <a href="/users/login" class="btn btn--primary">Log in</a>
                 <?php endif; ?>
 
                 <?php if (!empty($error)): ?>
@@ -20,12 +21,12 @@
 
                         <div class="form-field">
                             <input name="rNickname" type="text" id="rNickname" class="full-width"
-                                   placeholder="Your Nickname" value="<?php $_POST['rNickname'] ?>">
+                                   placeholder="Your Nickname" value="<?php $_POST['rNickname'] ?? '' ?>">
                         </div>
 
                         <div class="form-field">
                             <input name="rEmail" type="email" id="rEmail" class="full-width"
-                                   placeholder="Your Email (Will Be Used As Login)" value="<?= $_POST['rEmail'] ?>">
+                                   placeholder="Your Email (Will Be Used As Login)" value="<?= $_POST['rEmail'] ?? '' ?>">
                         </div>
 
                         <div class="form-field">

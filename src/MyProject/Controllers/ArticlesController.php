@@ -8,16 +8,16 @@
 
 namespace MyProject\Controllers;
 
-use http\Exception\UnexpectedValueException;
+use MyProject\Exceptions\FileUploadException;
 use MyProject\Exceptions\Forbidden;
 use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\UnauthorizedException;
 use MyProject\Models\Articles\Article;
-use MyProject\Models\ArticlesViewsInfo\ArticleViewInfo;
 use MyProject\Models\Categories\Category;
 use MyProject\Models\Comments\Comment;
 use MyProject\Models\Tags\Tag;
+use MyProject\Services\ImageUploader;
 use MyProject\View\View;
 use MyProject\Models\Users\User;
 use MyProject\Services\UsersAuthService;
@@ -34,19 +34,20 @@ class ArticlesController extends AbstractController
         }
 
         // Article data
-        $title = $article->getName();
         $nextArticle = Article::nextArticle($articleId);
         $prevArticle = Article::prevArticle($articleId);
         $comments = Comment::getByOneColumnArray('article_id', $articleId);
         $tags = Tag::getTagsByArticleId($articleId);
+        $additionalImages = $article->getAdditionalImages();
 
         $this->view->renderHtml('articles/view.php', [
-            'title' => $title,
+            'title' => $article->getName(),
             'article' => $article,
             'nextArticle' => $nextArticle,
             'prevArticle' => $prevArticle,
             'tags' => $tags,
             'comments' => $comments,
+            'additionalImages' => $additionalImages,
         ]);
     }
 
@@ -92,18 +93,18 @@ class ArticlesController extends AbstractController
         }
 
         if ($this->user->getRole() !== 'admin') {
-            throw new Forbidden('Only admin can edit articles.');
+            throw new Forbidden('Only admin can add articles.');
         }
 
         if (!empty($_POST)) {
             try {
                 $article = Article::createFromArray($_POST, $this->user);
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidArgumentException | FileUploadException $e) {
                 $this->view->renderHtml('articles/add.php', ['error' => $e->getMessage()]);
                 return;
             }
 
-            header('Location: /articles/' . $article->getId(), true, 302);
+//            header('Location: /articles/' . $article->getId(), true, 302);
             exit();
         }
 

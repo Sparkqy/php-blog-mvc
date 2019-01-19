@@ -20,13 +20,13 @@ class MainController extends AbstractController
 {
     public function main()
     {
-        $title = 'Kiev underground!';
+        // Main page data
         $articles = Article::getAll();
-        $featuredArticles = Article::getLastArticles(2);
+        $featuredArticles = Article::getLastArticles(3);
         $featuredArticleBig = array_shift($featuredArticles);
 
         $this->view->renderHtml('main/main.php', [
-            'title' => $title,
+            'title' => 'Kiev underground!',
             'articles' => $articles,
             'featuredArticles' => $featuredArticles,
             'featuredArticleBig' => $featuredArticleBig,

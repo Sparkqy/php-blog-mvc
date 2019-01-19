@@ -16,7 +16,7 @@
 
                         <div class="form-field">
                             <input name="lEmail" type="email" id="lEmail" class="full-width" placeholder="Your Email"
-                                   value="<?= $_POST['lEmail'] ?>">
+                                   value="<?= $_POST['lEmail'] ?? '' ?>">
                         </div>
 
                         <div class="form-field">

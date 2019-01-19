@@ -3,14 +3,6 @@
      ================================================== -->
     <section class="s-content s-content--narrow s-content--no-padding-bottom">
 
-        <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
-            <div class="article__admin">
-                <h4>Control options (admin):</h4>
-                <a href="/articles/<?= $article->getId() ?>/edit" class="btn btn--primary">Edit</a>
-                <a href="/articles/<?= $article->getId() ?>/delete" class="btn btn--danger">Delete</a>
-            </div>
-        <?php endif; ?>
-
         <article class="row format-standard">
 
             <div class="s-content__header col-full">
@@ -21,9 +13,20 @@
                     <li class="date"><?= date('l F, Y', strtotime($article->getCreatedAt())) ?></li>
                     <li>category: <?= $article->getCategory()->getName() ?></li>
                     <br>
+                    <?php if (!empty($user) && $user->getRole() === 'admin'): ?>
+                        <h4>Edit this article</h4>
+                        <a href="/articles/<?= $article->getId() ?>/edit" class="btn btn--primary">Edit</a>
+                        <a href="/articles/<?= $article->getId() ?>/delete" class="btn btn--danger">Delete</a>
+                    <?php endif; ?>
                 </ul>
 
             </div> <!-- end s-content__header -->
+
+            <div class="s-content__media col-full">
+                <div class="s-content__post-thumb">
+                    <img src="/<?= $article->getMainImage() ?>" alt="">
+                </div>
+            </div> <!-- end s-content__media -->
 
             <div class="col-full s-content__main">
 
@@ -31,19 +34,19 @@
                     <?= $article->getShortDescription() ?>
                 </p>
 
-            </div>
-
-            <div class="s-content__media col-full">
-                <div class="s-content__post-thumb">
-                    <img src="/<?= $article->getImg1() ?>" alt="">
-                </div>
-            </div> <!-- end s-content__media -->
-
-            <div class="col-full s-content__main">
-
                 <p>
                     <?= $article->getText() ?>
                 </p>
+
+                <?php if ($additionalImages !== null): ?>
+                    <div class="s-content__media col-full">
+                        <div class="s-content__post-thumb">
+                            <?php foreach ($additionalImages as $image): ?>
+                                <img src="/<?= $image ?>" alt="">
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <p class="s-content__tags">
                     <span>Post Tags</span>

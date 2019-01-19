@@ -30,6 +30,10 @@ abstract class AbstractCommand
         return $this->params[$paramName] ?? null;
     }
 
+    /**
+     * @param string $paramName
+     * @throws CliException
+     */
     protected function ensureParamExists(string $paramName)
     {
         if (!isset($this->params[$paramName]))

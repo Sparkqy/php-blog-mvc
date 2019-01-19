@@ -131,7 +131,7 @@ class User extends ActiveRecordEntity
 
         // Create new user
         $user = new User();
-
+        // User data
         $user->nickname = $userData['rNickname'];
         $user->email = $userData['rEmail'];
         $user->passwordHash = password_hash($userData['rPassword'], PASSWORD_DEFAULT);

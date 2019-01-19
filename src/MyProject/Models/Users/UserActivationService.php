@@ -20,7 +20,7 @@ class UserActivationService
         $code = bin2hex(random_bytes(16));
 
         $db = Db::getInstance();
-        $db->query(
+        $query = $db->query(
             'INSERT INTO `' . self::TABLE_NAME . '` (`user_id`, `code`) VALUES (:user_id, :code)',
             [
                 'user_id' => $user->getId(),
@@ -41,6 +41,10 @@ class UserActivationService
                 'code' => $code
             ]
         );
+
+        if (empty($result)) {
+            throw new UserActivationException('Activation failed.');
+        }
 
         return !empty($result);
     }

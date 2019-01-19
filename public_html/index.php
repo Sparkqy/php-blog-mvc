@@ -7,11 +7,11 @@
  * @param string $className
  */
 
+require __DIR__ . '/../vendor/autoload.php';
 
 use MyProject\View\View;
 
 try {
-    require __DIR__ . '/../vendor/autoload.php';
     $route = $_GET['route'] ?? '';
     $routes = require __DIR__ . '/../src/routes.php';
     $isRouteFound = false;

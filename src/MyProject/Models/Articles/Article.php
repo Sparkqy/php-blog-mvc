@@ -8,11 +8,14 @@
 
 namespace MyProject\Models\Articles;
 
-use http\Exception\InvalidArgumentException;
+use MyProject\Exceptions\InvalidArgumentException;
+use MyProject\Exceptions\FileUploadException;
 use MyProject\Models\ActiveRecordEntity;
+use MyProject\Models\ArticleTagLinks\ArticleTagLink;
 use MyProject\Models\Categories\Category;
 use MyProject\Models\Users\User;
 use MyProject\Services\Db;
+use MyProject\Services\ImageUploader;
 
 class Article extends ActiveRecordEntity
 {
@@ -21,8 +24,7 @@ class Article extends ActiveRecordEntity
     protected $name;
     protected $shortDescription;
     protected $text;
-    protected $image1;
-    protected $image2;
+    protected $images;
     protected $createdAt;
 
     protected static function getTableName(): string
@@ -30,21 +32,35 @@ class Article extends ActiveRecordEntity
         return 'articles';
     }
 
-    public function getImg1(): string
+    public function getImages(): array
     {
-        return (string)$this->image1;
+        return unserialize($this->images);
     }
 
-    public function getImg2(): string
+    public function getAdditionalImages(): ?array
     {
-        return (string)$this->image2;
+        $array = $this->getImages();
+        unset($array[0]);
+
+        return $array;
     }
 
+    public function getMainImage(): string
+    {
+        return $this->getImages()[0];
+    }
+
+    /**
+     * @return User
+     */
     public function getAuthor(): User
     {
         return User::getById($this->authorId);
     }
 
+    /**
+     * @return Category
+     */
     public function getCategory(): Category
     {
         return Category::getById($this->categoryId);
@@ -75,83 +91,86 @@ class Article extends ActiveRecordEntity
         return (string)$this->shortDescription;
     }
 
+    public function setImages(array $images): void
+    {
+        $imagePath = 'images/articles/';
+        foreach ($images as &$image) {
+            $image = $imagePath . $image;
+        }
+
+        $imagesToDb = serialize($images);
+        $this->images = $imagesToDb;
+    }
+
     public function setShortDescription(string $shortDescription): void
     {
-        $this->shortDescription = (string)$shortDescription;
+        $this->shortDescription = static::validate((string)$shortDescription);
     }
 
     public function setAuthor(User $author): void
     {
-        $this->authorId = (int)$author->getId();
+        $this->authorId = static::validate((int)$author->getId());
     }
 
     public function setName(string $name): void
     {
-        $this->name = (string)$name;
+        $this->name = static::validate((string)$name);
     }
 
     public function setText(string $text): void
     {
-        $this->text = (string)$text;
+        $this->text = static::validate((string)$text);
     }
 
-    public function setImage1(string $image1): void
+    public function setCatId(int $catId): void
     {
-        $this->image1 = (string)$image1;
-    }
-
-    public function setImage2(string $image2): void
-    {
-        $this->image2 = (string)$image2;
-    }
-
-    public function setAuthorId(string $authorId): void
-    {
-        $this->authorId = (string)$authorId;
-    }
-
-    public function setCatId(string $catId): void
-    {
-        $this->categoryId = (string)$catId;
+        $this->categoryId = (int)$catId;
     }
 
     public static function createFromArray(array $fields, User $author): Article
     {
         if (empty($fields['aName'])) {
-            throw new InvalidArgumentException('Empty article\'s name field.');
+            throw new InvalidArgumentException('Empty article name field.');
         }
 
-        if (empty($fields['aImage1'])) {
-            throw new InvalidArgumentException('Empty article\'s first image field.');
-        }
-
-        if (empty($fields['aDesc'])) {
-            throw new InvalidArgumentException('Empty article\'s description field.');
+        if (empty($fields['aShortDesc'])) {
+            throw new InvalidArgumentException('Empty article description field.');
         }
 
         if (empty($fields['aText'])) {
-            throw new InvalidArgumentException('Empty article\'s text field.');
+            throw new InvalidArgumentException('Empty article text field.');
         }
 
-        if (empty($fields['aTags'])) {
-            throw new InvalidArgumentException('Empty article\'s tags ID field.');
+        if (empty($fields['aTagId'])) {
+            throw new InvalidArgumentException('Empty article tags ID field.');
         }
 
         if (empty($fields['aCatId'])) {
-            throw new InvalidArgumentException('Empty article\'s category ID field.');
+            throw new InvalidArgumentException('Empty article category ID field.');
         }
 
+
         $article = new Article();
+        $articleTagLink = new ArticleTagLink();
 
-        $article
-            ->setAuthor($author)
-            ->setCatId($fields['aCatId'])
-            ->setName($fields['aName'])
-            ->setImage1($fields['aImage1'])
-            ->setImage2($fields['aImage2'])
-            ->setText($fields['aText'])
+        // article data to db
+        $article->setAuthor($author);
+        $article->setCatId($fields['aCatId']);
+        $article->setName($fields['aName']);
+        $article->setText($fields['aText']);
+        $article->setShortDescription($fields['aShortDesc']);
+        $article->setImages($_FILES['aImages']['name']);
 
-            ->save();
+        // uploading image to server folder
+        ImageUploader::uploadImage($_FILES['aImages']);
+
+        $article->save();
+
+        // article_tag_links to db
+        $articleTagLink->setArticleId($article->getId());
+        $articleTagLink->setTagId($fields['aTagId']);
+
+        $articleTagLink->saveArray();
 
         return $article;
     }

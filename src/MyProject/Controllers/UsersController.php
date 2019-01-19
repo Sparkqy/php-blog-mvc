@@ -48,12 +48,16 @@ class UsersController extends AbstractController
             try {
                 $user = User::signUp($_POST);
             } catch (InvalidArgumentException $e) {
-                $this->view->renderHtml('users/signUp.php', ['error' => $e->getMessage()], 422);
+                $this->view->renderHtml('users/signUp.php', [
+                    'error' => $e->getMessage(),
+                    'title' => 'Registration failed.'
+                ], 422);
                 return;
             }
         }
 
         if ($user instanceof User) {
+
             $code = UserActivationService::createActivationCode($user);
 
             EmailSender::send($user, 'Activation', 'userActivation.php', [
@@ -61,23 +65,35 @@ class UsersController extends AbstractController
                 'code' => $code,
             ]);
 
-            $this->view->renderHtml('users/signUp.php',
-                ['rSuccess' => 'Registration successful, activation email was sent to your email address.']);
+            $this->view->renderHtml('users/signUp.php', [
+                'rSuccess' => 'Registration successful, activation email was sent to your email address.',
+                'title' => 'Registration successful.',
+            ]);
             return;
         }
 
-        $this->view->renderHtml('users/signUp.php');
+        $title = 'Registration';
+        $this->view->renderHtml('users/signUp.php', ['title' => $title]);
     }
 
     public function activate(int $userId, string $activationCode)
     {
         $user = User::getById($userId);
-
-        $isCodeValid = UserActivationService::checkActivationCode($user, $activationCode);
+        try {
+            $isCodeValid = UserActivationService::checkActivationCode($user, $activationCode);
+        } catch (UserActivationException $e) {
+            $this->view->renderHtml('users/signUp.php', [
+                'error' => $e->getMessage(),
+                'title' => 'Activation failed.',
+                ], 403);
+            return;
+        }
 
         if ($isCodeValid) {
             $user->activate();
-            $this->view->renderHtml('mail/userActivationSuccessful.php', [], 302);
+            $this->view->renderHtml('mail/userActivationSuccessful.php', [
+                'title' => 'Activation successful',
+            ], 302);
             UserActivationService::deleteActivationCode($userId, $activationCode);
         }
     }

@@ -4,15 +4,13 @@
             "MyProject\\": "src/MyProject"
         }
     },
-    "name": "vendor/name",
+    "name": "Sparky/kiev-underground",
+    "type": "project",
+    "licence": "proprietary",
     "authors": [
         {
-            "name": "SparkyGit",
+            "name": "Ilya Koliadenko",
             "email": "triiko21@gmail.com"
         }
-    ],
-    "require": {
-      "ext-http": "*",
-      "ext-pdo": "*"
-    }
+    ]
 }
