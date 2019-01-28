@@ -303,6 +303,11 @@ abstract class ActiveRecordEntity
         return $mappedProperties;
     }
 
+    private function updateArray(array $mappedProperties): void
+    {
+
+    }
+
     /**
      * @method private update updates data to db
      * @param array $mappedProperties
@@ -363,7 +368,7 @@ abstract class ActiveRecordEntity
         $mappedProperties = $this->mapPropertiesToDbFormat();
         $mappedPropertiesArray = $this->mapArrayPropertiesToDbFormat($mappedProperties);
         if ($this->id !== null) {
-            $this->update($mappedPropertiesArray);
+            $this->updateArray($mappedPropertiesArray);
         } else {
             $this->insertArray($mappedPropertiesArray);
         }
@@ -452,6 +457,16 @@ abstract class ActiveRecordEntity
         $db = Db::getInstance();
         $sql = 'DELETE FROM `' . static::getTableName() . '` WHERE `id` = :id;';
         $params = [':id' => $this->id];
+
+        $db->query($sql, $params);
+        $this->id = null;
+    }
+
+    public function deleteByOneColumn(string $columnName, $value): void
+    {
+        $db = Db::getInstance();
+        $sql = 'DELETE FROM `' . static::getTableName() . '` WHERE `' . $columnName . '` = :value;';
+        $params = [':value' => $value];
 
         $db->query($sql, $params);
         $this->id = null;

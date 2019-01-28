@@ -57,21 +57,29 @@ class ArticlesController extends AbstractController
         if ($article === null) {
             throw new NotFoundException();
         }
-
         if ($this->user === null) {
             throw new UnauthorizedException();
         }
-
         if ($this->user->getRole() !== 'admin') {
             throw new Forbidden('Only admin can edit articles.');
         }
+
+        // page data
+        $tags = Tag::getTagsByArticleId($articleId);
         $categoryList = Category::getAll();
         $title = $article->getName() . ' - edit';
+
         if (!empty($_POST)) {
             try {
                 $article->updateFromArray($_POST);
             } catch (InvalidArgumentException $e) {
-                $this->view->renderHtml('articles/edit.php', ['error' => $e->getMessage()]);
+                $this->view->renderHtml('articles/edit.php', [
+                    'error' => $e->getMessage(),
+                    'article' => $article,
+                    'categoryList' => $categoryList,
+                    'tags' => $tags,
+                    'title' => $title,
+                ]);
                 return;
             }
 
@@ -83,6 +91,7 @@ class ArticlesController extends AbstractController
             'article' => $article,
             'categoryList' => $categoryList,
             'title' => $title,
+            'tags' => $tags,
         ]);
     }
 
@@ -104,7 +113,7 @@ class ArticlesController extends AbstractController
                 return;
             }
 
-//            header('Location: /articles/' . $article->getId(), true, 302);
+            header('Location: /articles/' . $article->getId(), true, 302);
             exit();
         }
 

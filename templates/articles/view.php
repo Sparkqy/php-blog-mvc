@@ -24,7 +24,7 @@
 
             <div class="s-content__media col-full">
                 <div class="s-content__post-thumb">
-                    <img src="/<?= $article->getMainImage() ?>" alt="">
+                    <img src="/<?= $article->getMainImage() ?>" alt="<?= $article->getName() ?>">
                 </div>
             </div> <!-- end s-content__media -->
 
@@ -42,7 +42,7 @@
                     <div class="s-content__media col-full">
                         <div class="s-content__post-thumb">
                             <?php foreach ($additionalImages as $image): ?>
-                                <img src="/<?= $image ?>" alt="">
+                                <img src="/<?= $image ?>" alt="<?= $article->getName() ?>">
                             <?php endforeach; ?>
                         </div>
                     </div>

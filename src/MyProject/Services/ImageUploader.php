@@ -48,27 +48,37 @@ class ImageUploader
             $uploadDir = "/images/articles/";
 
             // preparing array for uploading
-
-            $uploads = [];
-            foreach ($fileData as $key => $file) {
-                if ($key == 'name') {
-                    foreach ($file as $key => $fileName) {
-                        $uploads['file' . $key][] = $currentDir . $uploadDir . basename($fileName);
-                    }
-                }
-                if ($key == 'tmp_name') {
-                    foreach ($file as $key => $fileTmp) {
-                        $uploads['file' . $key][] = $fileTmp;
-                    }
-                }
-            }
-
-            // uploading images
-            foreach ($uploads as $upload) {
-                $didUpload = move_uploaded_file($upload['1'], $upload['0']);
+            if (count($fileData['name']) === 1) {
+                $uploadPath = $currentDir . $uploadDir . basename($fileData['name'][0]);
+                $tmpName = $fileData['tmp_name'][0];
+                $didUpload = move_uploaded_file($tmpName, $uploadPath);
 
                 if (!$didUpload) {
                     throw new FileUploadException('An error occurred while image uploading. Try again or contact the admin');
+                }
+            } else {
+                $uploads = [];
+
+                foreach ($fileData as $key => $file) {
+                    if ($key == 'name') {
+                        foreach ($file as $key => $fileName) {
+                            $uploads['file' . $key][] = $currentDir . $uploadDir . basename($fileName);
+                        }
+                    }
+                    if ($key == 'tmp_name') {
+                        foreach ($file as $key => $fileTmp) {
+                            $uploads['file' . $key][] = $fileTmp;
+                        }
+                    }
+                }
+
+                // uploading images
+                foreach ($uploads as $upload) {
+                    $didUpload = move_uploaded_file($upload['1'], $upload['0']);
+
+                    if (!$didUpload) {
+                        throw new FileUploadException('An error occurred while image uploading. Try again or contact the admin');
+                    }
                 }
             }
         }

@@ -127,33 +127,39 @@ class Article extends ActiveRecordEntity
         $this->categoryId = (int)$catId;
     }
 
+    /**
+     * @param array $fields
+     * @param User $author
+     * @return Article
+     * @throws FileUploadException
+     * @throws InvalidArgumentException
+     */
     public static function createFromArray(array $fields, User $author): Article
     {
+        // validation
         if (empty($fields['aName'])) {
             throw new InvalidArgumentException('Empty article name field.');
         }
-
         if (empty($fields['aShortDesc'])) {
             throw new InvalidArgumentException('Empty article description field.');
         }
-
         if (empty($fields['aText'])) {
             throw new InvalidArgumentException('Empty article text field.');
         }
-
         if (empty($fields['aTagId'])) {
             throw new InvalidArgumentException('Empty article tags ID field.');
         }
-
         if (empty($fields['aCatId'])) {
             throw new InvalidArgumentException('Empty article category ID field.');
         }
-
+        if (empty($_FILES['aImages']['name'][0])) {
+            throw new InvalidArgumentException('Empty image field.');
+        }
 
         $article = new Article();
         $articleTagLink = new ArticleTagLink();
 
-        // article data to db
+        // article data save to object
         $article->setAuthor($author);
         $article->setCatId($fields['aCatId']);
         $article->setName($fields['aName']);
@@ -166,7 +172,7 @@ class Article extends ActiveRecordEntity
 
         $article->save();
 
-        // article_tag_links to db
+        // article_tag_links data to object
         $articleTagLink->setArticleId($article->getId());
         $articleTagLink->setTagId($fields['aTagId']);
 
@@ -175,25 +181,53 @@ class Article extends ActiveRecordEntity
         return $article;
     }
 
-    public function updateFromArray(array $fields): Article
+    /**
+     * @param array $fields
+     * @return Article
+     * @throws InvalidArgumentException
+     */
+    public function updateFromArray(array $fields)
     {
         if (empty($fields['eName'])) {
-            throw new InvalidArgumentException('Empty article\'s name field.');
+            throw new InvalidArgumentException('Empty article name field.');
         }
-
         if (empty($fields['eText'])) {
-            throw new InvalidArgumentException('Empty article\' text field.');
+            throw new InvalidArgumentException('Empty article text field.');
         }
-
+        if (empty($fields['eShortDesc'])) {
+            throw new InvalidArgumentException('Empty article description field.');
+        }
         if (empty($fields['eCatId'])) {
-            throw new InvalidArgumentException('Empty article\'s category ID field.');
+            throw new InvalidArgumentException('Empty article category field.');
         }
+        if (empty($fields['eTagId'])) {
+            throw new InvalidArgumentException('Empty article tags field.');
+        }
+       if (empty($_FILES['eImages']['name'][0])) {
+           throw new InvalidArgumentException('Empty image field.');
+       }
 
+
+        // article data update to object
         $this->setName($fields['eName']);
         $this->setCatId($fields['eCatId']);
         $this->setText($fields['eText']);
+        $this->setShortDescription($fields['eShortDesc']);
+        $this->setImages($_FILES['eImages']['name']);
+
+        // uploading image to server folder
+        ImageUploader::uploadImage($_FILES['eImages']);
 
         $this->save();
+
+        // articleTagLinks data update to object
+        $articleTagLink = ArticleTagLink::getByOneColumn('article_id', $this->getId());
+        // deleting article_tag_links old data from db
+        $articleTagLink->deleteByOneColumn('article_id', $this->getId());
+        // article_tag_links data to object
+        $articleTagLink->setTagId($fields['eTagId']);
+
+        $articleTagLink->saveArray();
 
         return $this;
     }
