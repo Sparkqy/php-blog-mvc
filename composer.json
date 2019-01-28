@@ -12,5 +12,8 @@
             "name": "Ilya Koliadenko",
             "email": "triiko21@gmail.com"
         }
-    ]
+    ],
+    "require": {
+        "ext-json": "*"
+    }
 }

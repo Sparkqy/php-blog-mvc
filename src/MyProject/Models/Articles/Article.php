@@ -184,9 +184,10 @@ class Article extends ActiveRecordEntity
     /**
      * @param array $fields
      * @return Article
+     * @throws FileUploadException
      * @throws InvalidArgumentException
      */
-    public function updateFromArray(array $fields)
+    public function updateFromArray(array $fields): Article
     {
         if (empty($fields['eName'])) {
             throw new InvalidArgumentException('Empty article name field.');
@@ -203,9 +204,9 @@ class Article extends ActiveRecordEntity
         if (empty($fields['eTagId'])) {
             throw new InvalidArgumentException('Empty article tags field.');
         }
-       if (empty($_FILES['eImages']['name'][0])) {
-           throw new InvalidArgumentException('Empty image field.');
-       }
+        if (empty($_FILES['eImages']['name'][0])) {
+            throw new InvalidArgumentException('Empty image field.');
+        }
 
 
         // article data update to object

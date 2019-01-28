@@ -15,7 +15,7 @@ use MyProject\Services\Db;
  * Class ActiveRecordEntity
  * @package MyProject\Models
  */
-abstract class ActiveRecordEntity
+abstract class ActiveRecordEntity implements \JsonSerializable
 {
     protected $id;
 
@@ -303,9 +303,12 @@ abstract class ActiveRecordEntity
         return $mappedProperties;
     }
 
-    private function updateArray(array $mappedProperties): void
+    /**
+     * @return array|mixed
+     */
+    public function jsonSerialize()
     {
-
+        return $this->mapPropertiesToDbFormat();
     }
 
     /**
@@ -367,11 +370,7 @@ abstract class ActiveRecordEntity
     {
         $mappedProperties = $this->mapPropertiesToDbFormat();
         $mappedPropertiesArray = $this->mapArrayPropertiesToDbFormat($mappedProperties);
-        if ($this->id !== null) {
-            $this->updateArray($mappedPropertiesArray);
-        } else {
-            $this->insertArray($mappedPropertiesArray);
-        }
+        $this->insertArray($mappedPropertiesArray);
 
         return $this->id;
     }

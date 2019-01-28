@@ -39,7 +39,7 @@ class ImageUploader
         return true;
     }
 
-    public function uploadImage(array $fileData)
+    public static function uploadImage(array $fileData)
     {
         $isValid = ImageUploader::isImageValid($fileData);
 
